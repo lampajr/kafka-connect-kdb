@@ -1,6 +1,13 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>io.confluent</groupId>
+        <artifactId>common</artifactId>
+        <version>6.2.0</version>
+    </parent>
 
     <groupId>com.lampajr.kafka</groupId>
     <artifactId>kafka-connect-kdb</artifactId>
@@ -16,6 +23,8 @@
         <junit.version>4.13.2</junit.version>
         <maven.jar.version>3.2.0</maven.jar.version>
         <maven.compiler.version>2.5.1</maven.compiler.version>
+        <!--        <checkstyle.version>8.44</checkstyle.version>-->
+        <!--        <maven-checkstyle-plugin.version>3.1.1</maven-checkstyle-plugin.version>-->
     </properties>
 
     <dependencies>
@@ -35,6 +44,22 @@
 
     <build>
         <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-checkstyle-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>validate</id>
+                        <phase>validate</phase>
+                        <configuration>
+                            <suppressionsLocation>checkstyle/suppressions.xml</suppressionsLocation>
+                        </configuration>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>

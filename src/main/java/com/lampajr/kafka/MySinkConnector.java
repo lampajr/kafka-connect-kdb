@@ -1,17 +1,16 @@
 package com.lampajr.kafka;
 
-import java.util.List;
-import java.util.Map;
-
 import org.apache.kafka.common.config.ConfigDef;
 import org.apache.kafka.connect.connector.Task;
-import org.apache.kafka.connect.errors.ConnectException;
 import org.apache.kafka.connect.sink.SinkConnector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.List;
+import java.util.Map;
+
 public class MySinkConnector extends SinkConnector {
-  private static Logger log = LoggerFactory.getLogger(MySinkConnector.class);
+  private static final Logger log = LoggerFactory.getLogger(MySinkConnector.class);
   private MySinkConnectorConfig config;
 
   @Override
