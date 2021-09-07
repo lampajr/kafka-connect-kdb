@@ -1,6 +1,18 @@
-Welcome to your new Kafka Connect connector!
+# Introduction
 
-# Running in development
+The KDB plugin is a collection of connectors that are used to interact with KDB databases through http.
+
+# Connectors
+
+## KDB Sink Connector
+
+The KDB Sink Connector is used to write data from Kafka to a KDB instance.
+
+TODO
+
+### Configuration
+
+TODO
 
 ```
 mvn clean package
