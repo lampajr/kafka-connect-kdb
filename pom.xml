@@ -68,6 +68,7 @@
         <junit.version>4.12</junit.version>
         <mockito.version>3.9.0</mockito.version>
         <confluent.hub.packaging.version>0.12.0</confluent.hub.packaging.version>
+        <docker-compose-rule.version>1.7.0</docker-compose-rule.version>
 
         <maven.checkstyle.version>3.1.2</maven.checkstyle.version>
         <com-puppycrawl-tools.version>8.45</com-puppycrawl-tools.version>
@@ -85,6 +86,14 @@
         </dependency>
 
         <!-- test -->
+        <!-- For executing JUnit tests that interact with Docker Compose managed containers.
+             https://github.com/palantir/docker-compose-rule -->
+        <dependency>
+            <groupId>com.palantir.docker.compose</groupId>
+            <artifactId>docker-compose-rule-junit4</artifactId>
+            <version>${docker-compose-rule.version}</version>
+        </dependency>
+
         <!-- https://mvnrepository.com/artifact/junit/junit -->
         <dependency>
             <groupId>junit</groupId>
