@@ -250,39 +250,22 @@
                 <version>3.3.0</version>
                 <executions>
                     <execution>
-                        <id>assembly-single-package</id>
+                        <id>make-assembly</id>
                         <phase>package</phase>
                         <goals>
                             <goal>single</goal>
                         </goals>
                         <configuration>
+                            <skipAssembly>true</skipAssembly> <!-- Temporary disabled -->
                             <attach>false</attach>
                             <appendAssemblyId>false</appendAssemblyId>
-                            <descriptorRefs>
-                                <descriptorRef>package</descriptorRef>
-                            </descriptorRefs>
+                            <descriptors>
+                                <descriptor>src/main/assembly/package.xml</descriptor>
+                            </descriptors>
                             <formats>
                                 <format>tar.gz</format>
                             </formats>
                             <tarLongFileMode>posix</tarLongFileMode>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>assembly-single-dir</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>single</goal>
-                        </goals>
-                        <configuration>
-                            <attach>false</attach>
-                            <finalName>kafka-connect-target</finalName>
-                            <appendAssemblyId>false</appendAssemblyId>
-                            <descriptorRefs>
-                                <descriptorRef>package</descriptorRef>
-                            </descriptorRefs>
-                            <formats>
-                                <format>dir</format>
-                            </formats>
                         </configuration>
                     </execution>
                 </executions>
