@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.lampajr.kafka;
+package com.lampajr.kafka.connect.kdb;
 
 import org.junit.Assert;
 import org.junit.Test;
