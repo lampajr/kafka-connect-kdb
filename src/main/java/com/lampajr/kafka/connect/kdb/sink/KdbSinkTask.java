@@ -13,31 +13,42 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.lampajr.kafka.connect.kdb;
+package com.lampajr.kafka.connect.kdb.sink;
 
-import com.google.common.base.Strings;
+import com.lampajr.kafka.connect.kdb.VersionUtil;
+import org.apache.kafka.connect.sink.SinkRecord;
+import org.apache.kafka.connect.sink.SinkTask;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Collection;
+import java.util.Map;
+
 /**
- * Version utility class
+ * Main KDB sink task
+ * TODO: implement
  */
-public class VersionUtil {
+public class KdbSinkTask extends SinkTask {
 
-  private static final Logger log = LoggerFactory.getLogger(VersionUtil.class);
+  private static Logger logger = LoggerFactory.getLogger(KdbSinkTask.class);
 
-  final static String FALLBACK_VERSION = "0.0.0.0";
+  @Override
+  public String version() {
+    return VersionUtil.getVersion(getClass());
+  }
 
-  public static String getVersion(Class<?> cls) {
-    String version;
+  @Override
+  public void start(Map<String, String> map) {
 
-    try {
-      version = cls.getPackage().getImplementationVersion();
+  }
 
-      return Strings.isNullOrEmpty(version) ? FALLBACK_VERSION : version;
-    } catch (Exception ex) {
-      log.error("Exception thrown while retrieving version", ex);
-      return FALLBACK_VERSION;
-    }
+  @Override
+  public void put(Collection<SinkRecord> collection) {
+
+  }
+
+  @Override
+  public void stop() {
+
   }
 }

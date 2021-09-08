@@ -13,15 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.lampajr.kafka.connect.kdb;
+package com.lampajr.kafka.connect.kdb.sink;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.apache.kafka.common.config.AbstractConfig;
+import org.apache.kafka.common.config.ConfigDef;
 
-public class VersionUtilTest extends AbstractTest {
+import java.util.Map;
 
-    @Test
-    public void getVersion() {
-        Assert.assertEquals(VersionUtil.FALLBACK_VERSION, VersionUtil.getVersion(VersionUtil.class));
-    }
+public class KdbSinkConfig extends AbstractConfig {
+
+  // TODO: implement config_def .define(..).define(..)..
+  public static final ConfigDef CONFIG_DEF = new ConfigDef();
+
+  public KdbSinkConfig(Map<?, ?> props) {
+    super(CONFIG_DEF, props);
+  }
 }
