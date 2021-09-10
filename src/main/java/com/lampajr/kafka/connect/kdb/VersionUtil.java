@@ -28,6 +28,11 @@ public class VersionUtil {
 
   final static String FALLBACK_VERSION = "0.0.0.0";
 
+  /**
+   * Get the version of the specified class
+   * @param cls class
+   * @return version
+   */
   public static String getVersion(Class<?> cls) {
     String version;
 
