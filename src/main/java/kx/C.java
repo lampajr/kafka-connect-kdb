@@ -77,7 +77,7 @@ public class C {
   private int sync = 0;
 
   /**
-   * Sets character encoding for serialising/deserialising strings.
+   * Sets character encoding for serialising/deserializing strings.
    *
    * @param encoding The name of a supported
    *                 <a href="../lang/package-summary.html#charenc">
