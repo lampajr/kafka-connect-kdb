@@ -85,7 +85,7 @@ public class KdbSinkConfig extends AbstractConfig {
   public static final String KDB_SSL_ENABLED_CONFIG = KDB_PREFIX + ".ssl.enabled";
   private static final String KDB_SSL_ENABLED_DISPLAY = "SSL Enabled";
   private static final String KDB_SSL_ENABLED_DOC = "Flag to determine id SSL is enabled.";
-  private static final Boolean KDB_SSL_ENABLED_DEFAULT = true;
+  public static final Boolean KDB_SSL_ENABLED_DEFAULT = true;
 
   /**
    * Kdb read port
@@ -108,7 +108,7 @@ public class KdbSinkConfig extends AbstractConfig {
   private static final String KDB_ASYNC_WRITE_DISPLAY = "Async Write";
   private static final String KDB_ASYNC_WRITE_DOC = "Flag to determine if the write operation must be performed " +
       "asynchronously.";
-  private static final Boolean KDB_ASYNC_WRITE_DEFAULT = true;
+  public static final Boolean KDB_ASYNC_WRITE_DEFAULT = true;
 
   /**
    * Kdb calling function for writes
@@ -139,7 +139,7 @@ public class KdbSinkConfig extends AbstractConfig {
   private static final String KDB_WRITE_MODE_DISPLAY = "Write Mode";
   private static final String KDB_WRITE_MODE_DOC = "The write mode to use when flushing data to kdb.\n" +
       "This must be set taking into account the signature of the function defined in ``kdb.write.fn``.";
-  private static final WriteMode KDB_WRITE_MODE_DEFAULT = WriteMode.SIMPLE;
+  public static final WriteMode KDB_WRITE_MODE_DEFAULT = WriteMode.SIMPLE;
 
   /**
    * Skip offset flag [if mode WITH_PARTITION or FULL]
@@ -148,7 +148,7 @@ public class KdbSinkConfig extends AbstractConfig {
   private static final String KDB_SKIP_OFFSET_DISPLAY = "Skip Kdb Offset";
   private static final String KDB_SKIP_OFFSET_DOC = "Flag to determine if the process should ignore the offset returned " +
       "by kdb itself. This must be set only if kdb.write.mode is 2. or 3.";
-  private static final Boolean KDB_SKIP_OFFSET_DEFAULT = false;
+  public static final Boolean KDB_SKIP_OFFSET_DEFAULT = false;
 
   /**
    * Kdb table name
@@ -233,7 +233,7 @@ public class KdbSinkConfig extends AbstractConfig {
       ).define(
           KDB_WRITE_MODE_CONFIG,
           ConfigDef.Type.STRING,
-          KDB_WRITE_MODE_DEFAULT,
+          KDB_WRITE_MODE_DEFAULT.toString(),
           EnumValidator.in(WriteMode.values()),
           ConfigDef.Importance.HIGH,
           KDB_WRITE_MODE_DOC,
@@ -266,7 +266,7 @@ public class KdbSinkConfig extends AbstractConfig {
       .define(
           KDB_OFFSET_FN_CONFIG,
           ConfigDef.Type.STRING,
-          ConfigDef.NO_DEFAULT_VALUE,
+          null,
           ConfigDef.Importance.HIGH,
           KDB_OFFSET_FN_DOC,
           OFFSETS_GROUP,
