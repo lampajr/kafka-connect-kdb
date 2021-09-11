@@ -168,6 +168,7 @@ public class KdbSinkConfig extends AbstractConfig {
   private static final String WRITES_GROUP = "KDB Writes";
   private static final String OFFSETS_GROUP = "KDB Offsets";
 
+  // validators
   private static final ConfigDef.Range TCP_PORT_VALIDATOR = ConfigDef.Range.between(0, 65535);
 
   /** Kdb configuration definition */
