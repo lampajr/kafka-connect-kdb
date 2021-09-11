@@ -44,15 +44,15 @@ public class KdbSinkConfig extends AbstractConfig {
      */
     SIMPLE,
     /**
-     * fn[offset, tables; data]
+     * fn[offset; tables; data]
      */
     WITH_OFFSET,
     /**
-     * fn[partition, tables; data]
+     * fn[partition; tables; data]
      */
     WITH_PARTITION,
     /**
-     * fn[offset, partition, tables; data]
+     * fn[offset; partition; tables; data]
      */
     FULL
   }
