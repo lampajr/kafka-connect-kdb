@@ -15,6 +15,7 @@
  */
 package com.lampajr.kafka.connect.kdb.sink;
 
+import com.lampajr.kafka.connect.kdb.util.ConfigUtils;
 import org.apache.kafka.common.config.AbstractConfig;
 import org.apache.kafka.common.config.ConfigDef;
 import org.apache.kafka.common.config.ConfigException;
@@ -196,7 +197,7 @@ public class KdbSinkConfig extends AbstractConfig {
           KDB_SSL_ENABLED_DISPLAY
       ).define(
           KDB_PORT_READ_CONFIG,
-          ConfigDef.Type.INT,
+          ConfigDef.Type.LONG,
           ConfigDef.NO_DEFAULT_VALUE,
           TCP_PORT_VALIDATOR, // range (0, 65535)
           ConfigDef.Importance.HIGH,
@@ -207,7 +208,7 @@ public class KdbSinkConfig extends AbstractConfig {
           KDB_PORT_READ_DISPLAY
       ).define(
           KDB_PORT_WRITE_CONFIG,
-          ConfigDef.Type.STRING,
+          ConfigDef.Type.LONG,
           ConfigDef.NO_DEFAULT_VALUE,
           TCP_PORT_VALIDATOR, // range (0, 65535)
           ConfigDef.Importance.HIGH,
@@ -283,10 +284,37 @@ public class KdbSinkConfig extends AbstractConfig {
           KDB_SKIP_OFFSET_DISPLAY
       );
 
-  // TODO: Add local variables to store custom kdb configurations
+  public final String connectorName;
+  public final String kdbHost;
+  public final String kdbAuth;
+  public final Boolean sslEnabled;
+  public final Long kdbWritePort;
+  public final Long kdbReadPort;
+  public final WriteMode writeMode;
+  public final Boolean asyncWrite;
+  public final String writeFn;
+  public final String tableName;
+  public final String offsetFn;
+  public final Boolean skipOffset;
+
 
   public KdbSinkConfig(Map<?, ?> props) {
     super(CONFIG_DEF, props);
+    this.connectorName = ConfigUtils.getConnectorName(props);
+    this.kdbHost = getString(KDB_HOST_CONFIG);
+    this.kdbAuth = getString(KDB_AUTH_CONFIG);
+    this.sslEnabled = getBoolean(KDB_SSL_ENABLED_CONFIG);
+    this.kdbWritePort = getLong(KDB_PORT_WRITE_CONFIG);
+    this.kdbReadPort = getLong(KDB_PORT_READ_CONFIG);
+    this.writeMode = WriteMode.valueOf(getString(KDB_WRITE_MODE_CONFIG).toUpperCase());
+    this.asyncWrite = getBoolean(KDB_ASYNC_WRITE_CONFIG);
+    this.writeFn = getString(KDB_WRITE_FN_CONFIG);
+    this.tableName = getString(KDB_TABLE_NAME_CONFIG);
+    this.offsetFn = getString(KDB_OFFSET_FN_CONFIG);
+    this.skipOffset = getBoolean(KDB_SKIP_OFFSET_CONFIG);
+
+    // TODO: implement cross-fields checks
+    // e.g., offset function must be set if writeMode requires offset
   }
 
   private static class EnumValidator implements ConfigDef.Validator {
