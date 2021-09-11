@@ -163,7 +163,7 @@ public class KdbSinkConfig extends AbstractConfig {
 
   private static final ConfigDef.Range TCP_PORT_VALIDATOR = ConfigDef.Range.between(0, 65535);
 
-  // TODO: implement config_def .define(..).define(..)..
+  /** Kdb configuration definition */
   public static final ConfigDef CONFIG_DEF = new ConfigDef()
       // connection
       .define(
@@ -285,20 +285,36 @@ public class KdbSinkConfig extends AbstractConfig {
           KDB_SKIP_OFFSET_DISPLAY
       );
 
+  /** connector's name */
   public final String connectorName;
+  /** kdb host */
   public final String kdbHost;
+  /** kdb auth */
   public final String kdbAuth;
+  /** ssl enabled flag */
   public final Boolean sslEnabled;
+  /** kdb write port */
   public final Long kdbWritePort;
+  /** kdb read port */
   public final Long kdbReadPort;
+  /** kdb write mode */
   public final WriteMode writeMode;
+  /** async write enabled */
   public final Boolean asyncWrite;
+  /** write function */
   public final String writeFn;
+  /** kdb table name */
   public final String tableName;
+  /** get offset function */
   public final String offsetFn;
+  /** skip kdb offset */
   public final Boolean skipOffset;
 
 
+  /**
+   * Custom KDB configuration class
+   * @param props configs properties map
+   */
   public KdbSinkConfig(Map<?, ?> props) {
     super(CONFIG_DEF, props);
     this.connectorName = ConfigUtils.getConnectorName(props);
