@@ -15,6 +15,7 @@
  */
 package com.lampajr.kafka.connect.kdb.sink;
 
+import com.google.common.base.Strings;
 import com.lampajr.kafka.connect.kdb.util.ConfigUtils;
 import org.apache.kafka.common.config.AbstractConfig;
 import org.apache.kafka.common.config.ConfigDef;
@@ -314,7 +315,11 @@ public class KdbSinkConfig extends AbstractConfig {
     this.skipOffset = getBoolean(KDB_SKIP_OFFSET_CONFIG);
 
     // TODO: implement cross-fields checks
-    // e.g., offset function must be set if writeMode requires offset
+    // offset function must be set if writeMode requires offset
+    if ((this.writeMode == WriteMode.WITH_OFFSET || this.writeMode == WriteMode.FULL) && Strings.isNullOrEmpty(offsetFn)) {
+      throw new ConfigException(
+          "Offset function is mandatory with FULL or WITH_OFFSET write mode!");
+    }
   }
 
   private static class EnumValidator implements ConfigDef.Validator {
