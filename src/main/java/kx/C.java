@@ -1,15 +1,19 @@
 /*
- * Copyright (c) 1998-2017 Kx Systems Inc.
+ * Copyright © 2021 Andrea Lamparelli (a.lamparelli95@gmail.com)
  *
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the
- * License. You may obtain a copy of the License at
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
- * specific language governing permissions and limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
+
 package kx;
 
 import java.io.DataInputStream;
@@ -1050,11 +1054,14 @@ public class C {
    * Deserialize string from byte buffer
    *
    * @return Deserialized string using registered encoding
-   * @throws UnsupportedEncodingException If there is an issue with the registed encoding
+   * @throws UnsupportedEncodingException If there is an issue with the registered encoding
    */
   String rs() throws UnsupportedEncodingException {
     int startPos = rBuffPos;
-    while (rBuff[rBuffPos++] != 0) ;
+    // prev code: ``while (rBuff[rBuffPos++] != 0);``
+    while (rBuff[rBuffPos] != 0) {
+      rBuffPos++;
+    }
     return (startPos == rBuffPos - 1) ? "" : new String(rBuff, startPos, rBuffPos - 1 - startPos, encoding);
   }
 
@@ -1062,7 +1069,7 @@ public class C {
    * Write String to serialization buffer
    *
    * @param s String to serialize
-   * @throws UnsupportedEncodingException If there is an issue with the registed encoding
+   * @throws UnsupportedEncodingException If there is an issue with the registered encoding
    */
   void w(String s) throws UnsupportedEncodingException {
     if (s != null) {
@@ -1077,7 +1084,7 @@ public class C {
   /**
    * Deserializes the contents of the incoming message buffer {@code b}.
    *
-   * @return deserialised object
+   * @return deserialized object
    * @throws UnsupportedEncodingException If the named charset is not supported
    */
   Object r() throws UnsupportedEncodingException {
@@ -1555,7 +1562,7 @@ public class C {
    * Deserialises {@code buffer} q ipc as an object
    *
    * @param buffer byte[] to deserialise object from
-   * @return deserialised object
+   * @return deserialized object
    * @throws KException                   if buffer contains kdb+ error object.
    * @throws UnsupportedEncodingException If the named charset is not supported
    */
@@ -1719,7 +1726,7 @@ public class C {
    * deserialized. This is called automatically during a sync request via k(String s,..). It can be called explicitly when
    * subscribing to a publisher.
    *
-   * @return an Object array of {messageType,deserialised object}
+   * @return an Object array of {messageType,deserialized object}
    * @throws KException                   if response contains an error
    * @throws IOException                  if an I/O error occurs.
    * @throws UnsupportedEncodingException If the named charset is not supported
@@ -1743,7 +1750,7 @@ public class C {
    * deserialized. This is called automatically during a sync request via k(String s,..). It can be called explicitly when
    * subscribing to a publisher.
    *
-   * @return the deserialised object
+   * @return the deserialized object
    * @throws KException                   if response contains an error
    * @throws IOException                  if an I/O error occurs.
    * @throws UnsupportedEncodingException If the named charset is not supported
@@ -1825,7 +1832,7 @@ public class C {
    * without trying to read any messages at this point; the caller can collect(read) the response message by calling readMsg();
    *
    * @param x The object to send
-   * @return deserialised response to request {@code x}
+   * @return deserialized response to request {@code x}
    * @throws KException  if request evaluation resulted in an error
    * @throws IOException if an I/O error occurs.
    */
@@ -1846,7 +1853,7 @@ public class C {
    * is received from the remote; typically the received message would be the corresponding response message.
    *
    * @param expr The expression to send
-   * @return deserialised response to request {@code x}
+   * @return deserialized response to request {@code x}
    * @throws KException  if request evaluation resulted in an error
    * @throws IOException if an I/O error occurs.
    */
@@ -1862,7 +1869,7 @@ public class C {
    *
    * @param s The name of the function, or a lambda itself
    * @param x The argument to the function named in s
-   * @return deserialised response to request {@code s} with params {@code x}
+   * @return deserialized response to request {@code s} with params {@code x}
    * @throws KException  if request evaluation resulted in an error
    * @throws IOException if an I/O error occurs.
    */
@@ -1880,7 +1887,7 @@ public class C {
    * @param s The name of the function, or a lambda itself
    * @param x The first argument to the function named in s
    * @param y The second argument to the function named in s
-   * @return deserialised response to the request
+   * @return deserialized response to the request
    * @throws KException  if request evaluation resulted in an error
    * @throws IOException if an I/O error occurs.
    */
@@ -1899,7 +1906,7 @@ public class C {
    * @param x The first argument to the function named in s
    * @param y The second argument to the function named in s
    * @param z The third argument to the function named in s
-   * @return deserialised response to the request
+   * @return deserialized response to the request
    * @throws KException  if request evaluation resulted in an error
    * @throws IOException if an I/O error occurs.
    */
@@ -1919,7 +1926,7 @@ public class C {
    * @param y The second argument to the function named in s
    * @param z The third argument to the function named in s
    * @param w The fourth argument to the function named in s
-   * @return deserialised response to the request
+   * @return deserialized response to the request
    * @throws KException  if request evaluation resulted in an error
    * @throws IOException if an I/O error occurs.
    */
