@@ -32,14 +32,26 @@ public class KdbSinkTask extends SinkTask {
 
   private static Logger logger = LoggerFactory.getLogger(KdbSinkTask.class);
 
+  // kdb sink configuration
+  private KdbSinkConfig config;
+
+  // writer: flushes data to kdb
+  //private KdbWriter writer;
+
   @Override
   public String version() {
     return VersionUtil.getVersion(getClass());
   }
 
   @Override
-  public void start(Map<String, String> map) {
+  public void start(final Map<String, String> props) {
+    logger.info("Starting KDB Sink task..");
 
+    // init configurations
+    config = new KdbSinkConfig(props);
+
+    // init writer
+    initWriter();
   }
 
   @Override
@@ -49,6 +61,15 @@ public class KdbSinkTask extends SinkTask {
 
   @Override
   public void stop() {
+    logger.info("Stopping KDB {} Sink task..", config.connectorName);
+  }
+
+  /**
+   * TODO: implement
+   * Initialize the kdb writer service which
+   * main goal is to flush data to the kdb server
+   */
+  private void initWriter() {
 
   }
 }
