@@ -1696,6 +1696,25 @@ public class C {
   }
 
   /**
+   * Sends an async message to the remote kdb+ process. This blocks until the serialized data has been written to the
+   * socket. On return, there is no guarantee that this msg has already been processed by the remote process. Use this to
+   * invoke a function in kdb+ which takes 4 arguments and does not return a value. e.g. to invoke f[x;y;z;w] use
+   * ks("f",x,y,z,w); to invoke a lambda, use ks("{x+y+z+w}",x,y,z,w);
+   *
+   * @param s The name of the function, or a lambda itself
+   * @param x The first argument to the function named in s
+   * @param y The second argument to the function named in s
+   * @param z The third argument to the function named in s
+   * @param w The third argument to the function named in s
+   * @throws IOException if an I/O error occurs.
+   */
+  public void ks(String s, Object x, Object y, Object z, Object w) throws IOException {
+    Object[] a = {s.toCharArray(), x, y, z, w};
+    w(0, a);
+  }
+
+
+  /**
    * Reads an incoming message from the remote kdb+ process. This blocks until a single message has been received and
    * deserialized. This is called automatically during a sync request via k(String s,..). It can be called explicitly when
    * subscribing to a publisher.
@@ -1886,6 +1905,26 @@ public class C {
    */
   public Object k(String s, Object x, Object y, Object z) throws KException, IOException {
     Object[] a = {s.toCharArray(), x, y, z};
+    return k(a);
+  }
+
+  /**
+   * Sends a sync message to the remote kdb+ process. This blocks until the message has been sent in full, and a message
+   * is received from the remote; typically the received message would be the corresponding response message. Use this to
+   * invoke a function in kdb+ which takes 4 arguments and returns a value. e.g. to invoke f[x;y;z;w] use k("f",x,y,z,w); to
+   * invoke a lambda, use k("{x+y+z+w}",x,y,z,w);
+   *
+   * @param s The name of the function, or a lambda itself
+   * @param x The first argument to the function named in s
+   * @param y The second argument to the function named in s
+   * @param z The third argument to the function named in s
+   * @param w The fourth argument to the function named in s
+   * @return deserialised response to the request
+   * @throws KException  if request evaluation resulted in an error
+   * @throws IOException if an I/O error occurs.
+   */
+  public Object k(String s, Object x, Object y, Object z, Object w) throws KException, IOException {
+    Object[] a = {s.toCharArray(), x, y, z, w};
     return k(a);
   }
 
