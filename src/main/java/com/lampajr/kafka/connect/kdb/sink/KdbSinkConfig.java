@@ -85,7 +85,6 @@ public class KdbSinkConfig extends AbstractConfig {
   public static final String KDB_SSL_ENABLED_CONFIG = KDB_PREFIX + ".ssl.enabled";
   private static final String KDB_SSL_ENABLED_DISPLAY = "SSL Enabled";
   private static final String KDB_SSL_ENABLED_DOC = "Flag to determine id SSL is enabled.";
-  public static final Boolean KDB_SSL_ENABLED_DEFAULT = true;
 
   /**
    * Kdb read port
@@ -108,7 +107,6 @@ public class KdbSinkConfig extends AbstractConfig {
   private static final String KDB_ASYNC_WRITE_DISPLAY = "Async Write";
   private static final String KDB_ASYNC_WRITE_DOC = "Flag to determine if the write operation must be performed " +
       "asynchronously.";
-  public static final Boolean KDB_ASYNC_WRITE_DEFAULT = true;
 
   /**
    * Kdb calling function for writes
@@ -139,7 +137,6 @@ public class KdbSinkConfig extends AbstractConfig {
   private static final String KDB_WRITE_MODE_DISPLAY = "Write Mode";
   private static final String KDB_WRITE_MODE_DOC = "The write mode to use when flushing data to kdb.\n" +
       "This must be set taking into account the signature of the function defined in ``kdb.write.fn``.";
-  public static final WriteMode KDB_WRITE_MODE_DEFAULT = WriteMode.SIMPLE;
 
   /**
    * Skip offset flag [if mode WITH_PARTITION or FULL]
@@ -148,7 +145,6 @@ public class KdbSinkConfig extends AbstractConfig {
   private static final String KDB_SKIP_OFFSET_DISPLAY = "Skip Kdb Offset";
   private static final String KDB_SKIP_OFFSET_DOC = "Flag to determine if the process should ignore the offset returned " +
       "by kdb itself. This must be set only if kdb.write.mode is 2. or 3.";
-  public static final Boolean KDB_SKIP_OFFSET_DEFAULT = false;
 
   /**
    * Kdb table name
@@ -157,6 +153,17 @@ public class KdbSinkConfig extends AbstractConfig {
   private static final String KDB_TABLE_NAME_DISPLAY = "Kdb Table Name";
   private static final String KDB_TABLE_NAME_DOC = "The kdb+ table name in which the data must be flushed to.";
 
+  // Defaults
+  /** Default value for KDB_SSL_ENABLED_CONFIG */
+  public static final Boolean KDB_SSL_ENABLED_DEFAULT = true;
+  /** Default value for KDB_SKIP_OFFSET_CONFIG */
+  public static final Boolean KDB_SKIP_OFFSET_DEFAULT = false;
+  /** Default value for KDB_WRITE_MODE_CONFIG */
+  public static final WriteMode KDB_WRITE_MODE_DEFAULT = WriteMode.SIMPLE;
+  /** Default value for KDB_ASYNC_WRITE_CONFIG */
+  public static final Boolean KDB_ASYNC_WRITE_DEFAULT = true;
+
+  // groups
   private static final String CONNECTION_GROUP = "KDB Connection";
   private static final String WRITES_GROUP = "KDB Writes";
   private static final String OFFSETS_GROUP = "KDB Offsets";
