@@ -41,7 +41,7 @@ import javax.net.ssl.SSLSocketFactory;
  * <p>
  * To begin with, a connection may be established to a listening kdb+ process via the constructor
  *
- * <code>c connection=new c("localhost",5000);</code>
+ * <code>C connection=new C("localhost",5000);</code>
  * </p>
  * <p>
  * There are then 3 methods available for interacting with the connection:
@@ -57,7 +57,7 @@ import javax.net.ssl.SSLSocketFactory;
  *     When the connection is no longer required, it may be closed via connection.close();
  * </ol>
  */
-public class KdbConnection {
+public class C {
   /**
    * Encoding specifies the character encoding to use when [de]-serializing strings.
    */
@@ -81,7 +81,7 @@ public class KdbConnection {
    * @throws UnsupportedEncodingException If the named encoding is not supported
    */
   public static void setEncoding(String encoding) throws UnsupportedEncodingException {
-    KdbConnection.encoding = encoding;
+    C.encoding = encoding;
   }
 
   /**
@@ -193,7 +193,7 @@ public class KdbConnection {
   }
 
   /**
-   * Initializes a new {@link KdbConnection} instance by acting as a server, blocking
+   * Initializes a new {@link C} instance by acting as a server, blocking
    * till a client connects and authenticates using the KDB+ protocol. This object
    * should be used for a single client connection. A new instance should be created
    * for each new client connection.
@@ -203,7 +203,7 @@ public class KdbConnection {
    *          Accepts all incoming connections if {@code null}.
    * @throws IOException if access is denied or an I/O error occurs.
    */
-  public KdbConnection(ServerSocket s, IAuthenticate a) throws IOException {
+  public C(ServerSocket s, IAuthenticate a) throws IOException {
     io(s.accept());
     rBuff = new byte[99];
     int bytesRead = inStream.read(rBuff);
@@ -217,18 +217,18 @@ public class KdbConnection {
   }
 
   /**
-   * Initializes a new {@link KdbConnection} instance by acting as a server, and blocks while waiting
+   * Initializes a new {@link C} instance by acting as a server, and blocks while waiting
    * for a new client connection. A new instance should be created for each new client connection.
    *
    * @param s {@link ServerSocket} to accept connections on using kdb+ IPC protocol.
    * @throws IOException an I/O error occurs.
    */
-  public KdbConnection(ServerSocket s) throws IOException {
+  public C(ServerSocket s) throws IOException {
     this(s, null);
   }
 
   /**
-   * Initializes a new {@link KdbConnection} instance and connects to KDB+ over TCP.
+   * Initializes a new {@link C} instance and connects to KDB+ over TCP.
    *
    * @param host             Host of remote q process
    * @param port             Port of remote q process
@@ -236,12 +236,12 @@ public class KdbConnection {
    * @throws KException  if access denied
    * @throws IOException if an I/O error occurs.
    */
-  public KdbConnection(String host, int port, String usernamepassword) throws KException, IOException {
+  public C(String host, int port, String usernamepassword) throws KException, IOException {
     this(host, port, usernamepassword, false);
   }
 
   /**
-   * Initializes a new {@link KdbConnection} instance and connects to KDB+ over TCP with optional TLS support for encryption.
+   * Initializes a new {@link C} instance and connects to KDB+ over TCP with optional TLS support for encryption.
    *
    * @param host             Host of remote q process
    * @param port             Port of remote q process
@@ -250,7 +250,7 @@ public class KdbConnection {
    * @throws KException  if access denied
    * @throws IOException if an I/O error occurs.
    */
-  public KdbConnection(String host, int port, String usernamepassword, boolean useTLS) throws KException, IOException {
+  public C(String host, int port, String usernamepassword, boolean useTLS) throws KException, IOException {
     wBuff = new byte[2 + ns(usernamepassword)];
     s = new Socket(host, port);
     if (useTLS) {
@@ -274,7 +274,7 @@ public class KdbConnection {
   }
 
   /**
-   * Initializes a new {@link KdbConnection} instance and connects to KDB+ over TCP, using {@code user.name} system property for username and password criteria.
+   * Initializes a new {@link C} instance and connects to KDB+ over TCP, using {@code user.name} system property for username and password criteria.
    * The {@code user.name} system property should be set to a value in the "username:password" format for remote authorization
    *
    * @param host Host of remote q process
@@ -282,15 +282,15 @@ public class KdbConnection {
    * @throws KException  if access denied
    * @throws IOException if an I/O error occurs.
    */
-  public KdbConnection(String host, int port) throws KException, IOException {
+  public C(String host, int port) throws KException, IOException {
     this(host, port, System.getProperty("user.name"));
   }
 
   /**
-   * Initializes a new {@link KdbConnection} instance for the purposes of serialization only, no connection is instantiated
+   * Initializes a new {@link C} instance for the purposes of serialization only, no connection is instantiated
    * to/from a KDB+ process
    */
-  public KdbConnection() {
+  public C() {
     ipcVersion = '\3';
     isLoopback = false;
     inStream = new DataInputStream(new InputStream() {
@@ -1747,7 +1747,7 @@ public class KdbConnection {
      * @param msg     The message contents
      * @throws IOException Thrown when message type is unexpected (i.e isnt a sync or async message)
      */
-    default void processMsg(KdbConnection c, byte msgType, Object msg) throws IOException {
+    default void processMsg(C c, byte msgType, Object msg) throws IOException {
       switch (msgType) {
         case 0:
           System.err.println("discarded unexpected incoming async msg!");
