@@ -20,7 +20,14 @@
 # 2 - prints the length of args
 # 3 - executes the arguments passed in.
 # Naturally it can be customised...to perform checks, start various services, etc.,
-# One good use case for the entrypoint would be to pass in a specific script and port to run. in this case a 'master' script like master.q could start on e.g. port 5000 and a set of worker scripts worker-1.q, worker-2.q etc., could run on 5001, 5002...
+# One good use case for the entrypoint would be to pass in a specific script and port to run. in this case a 'master' script like tick.q could start on e.g. port 5000 and a set of worker scripts worker-1.q, worker-2.q etc., could run on 5001, 5002...
 echo "Welcome to KDB+ on Docker"
 echo $#
-exec "$@"
+#exec "$@"
+
+#exec /q/l32/q -p 5000
+
+exec /q/l32/q tick.q sym . -p 5010 /tick &
+echo "Tickerplant started"
+run sleep 3
+exec /q/l32/q /tick/r.q :5010 -p 5011 /rdb

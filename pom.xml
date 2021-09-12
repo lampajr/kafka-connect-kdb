@@ -353,6 +353,7 @@
                                 <exclude>src/test/resources/**</exclude>
                                 <exclude>src/main/resources/**</exclude>
                                 <exclude>src/assembly/**</exclude>
+                                <exclude>**/*.q</exclude>
                             </excludes>
                         </licenseSet>
                     </licenseSets>

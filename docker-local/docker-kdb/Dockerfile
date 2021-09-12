@@ -39,6 +39,10 @@ RUN LIBC32_DEB=libc6-i386_2.19-18+deb8u10_amd64.deb \
 
 # Ensure we have your our zipped version of q for linux in the same folder as this Dockerfile, and copy it
 COPY q.zip .
+COPY tick.q /tick.q
+COPY tick/r.q /tick/r.q
+COPY tick/u.q /tick/u.q
+COPY tick/sym.q /tick/sym.q
 COPY entrypoint.sh /entrypoint.sh
 
 RUN chown root:root /entrypoint.sh; chmod 777 /entrypoint.sh
@@ -53,5 +57,5 @@ RUN unzip /q.zip \
 
 
 WORKDIR /
-EXPOSE  5001
+EXPOSE  5010 5011
 ENTRYPOINT ["/entrypoint.sh"]
