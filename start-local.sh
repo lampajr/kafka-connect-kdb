@@ -22,7 +22,7 @@ export BASE_FOLDER=$BASE_FOLDER
 
 if [ -z "$1" ]; then
   echo "Please select which docker-compose command you want to execute"
-  echo "For example: $()setup-local.sh up$() or $()setup-local.sh down$()"
+  echo "For example: 'setup-local.sh up$' or 'setup-local.sh down'"
   exit 1
 fi
 

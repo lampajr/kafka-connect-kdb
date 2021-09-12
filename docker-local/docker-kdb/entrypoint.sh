@@ -27,7 +27,9 @@ echo $#
 
 #exec /q/l32/q -p 5000
 
+# Tickerplant https://code.kx.com/q/wp/rt-tick/
 exec /q/l32/q tick.q sym . -p 5010 /tick &
 echo "Tickerplant started"
-run sleep 3
+
+# Real-time kdb database
 exec /q/l32/q /tick/r.q :5010 -p 5011 /rdb
