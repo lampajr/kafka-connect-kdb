@@ -15,25 +15,18 @@
  */
 package kx;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import support.AbstractDockerIntegratedTest;
 
 import static org.junit.Assert.*;
 
-public class KxConnectionIT {
-
-  private String host = "127.0.0.1";
-  private int port = 5010;
-  private C kxConn;
-
-  @Before
-  public void setUp() throws Exception {
-    kxConn = new C(host, port);
-  }
+public class KxConnectionIT extends AbstractDockerIntegratedTest {
 
   @Test
   public void writeAsyncTest() {
-
+    Assert.assertNotNull(kxConn);
   }
 
 }

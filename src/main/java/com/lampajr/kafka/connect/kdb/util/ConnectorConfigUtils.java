@@ -18,7 +18,7 @@ package com.lampajr.kafka.connect.kdb.util;
 import java.util.Map;
 
 /**
- * Utilities for the common configuration properties
+ * Utilities for the common connector configuration properties
  */
 public class ConnectorConfigUtils {
   /** Connector name config key */
