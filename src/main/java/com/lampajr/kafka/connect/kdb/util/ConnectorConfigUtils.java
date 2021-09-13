@@ -20,7 +20,7 @@ import java.util.Map;
 /**
  * Utilities for the common configuration properties
  */
-public class ConfigUtils {
+public class ConnectorConfigUtils {
   /** Connector name config key */
   public static final String CONNECTOR_NAME_CONFIG = "name";
 

@@ -87,7 +87,7 @@
         </dependency>
 
         <!-- Allows to read various configuration properties.
-             https://commons.apache.org/proper/commons-configuration/ -->
+             https://commons.apache.org/proper/commons-configuration/userguide/quick_start.html -->
         <dependency>
             <groupId>commons-configuration</groupId>
             <artifactId>commons-configuration</artifactId>

@@ -16,7 +16,7 @@
 package com.lampajr.kafka.connect.kdb.sink;
 
 import com.google.common.base.Strings;
-import com.lampajr.kafka.connect.kdb.util.ConfigUtils;
+import com.lampajr.kafka.connect.kdb.util.ConnectorConfigUtils;
 import org.apache.kafka.common.config.AbstractConfig;
 import org.apache.kafka.common.config.ConfigDef;
 import org.apache.kafka.common.config.ConfigException;
@@ -325,7 +325,7 @@ public class KdbSinkConfig extends AbstractConfig {
    */
   public KdbSinkConfig(Map<?, ?> props) {
     super(CONFIG_DEF, props);
-    this.connectorName = ConfigUtils.getConnectorName(props);
+    this.connectorName = ConnectorConfigUtils.getConnectorName(props);
     this.kdbHost = getString(KDB_HOST_CONFIG);
     this.kdbAuth = getString(KDB_AUTH_CONFIG);
     this.sslEnabled = getBoolean(KDB_SSL_ENABLED_CONFIG);
