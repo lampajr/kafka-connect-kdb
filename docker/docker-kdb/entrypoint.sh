@@ -31,5 +31,8 @@ echo $#
 exec /q/l32/q tick.q sym . -p 5010 /tick &
 echo "Tickerplant started"
 
-# Real-time kdb database
-exec /q/l32/q /tick/r.q :5010 -p 5011 /rdb
+# Real-time kdb subscriber
+exec /q/l32/q /tick/r.q :5010 -p 5011 /rdb &
+
+# Start feed handler
+exec /q/l32/q /tick/feedhandler.q /feed

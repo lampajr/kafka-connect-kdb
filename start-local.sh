@@ -16,7 +16,7 @@
 #
 
 
-BASE_FOLDER="./docker-local/"
+BASE_FOLDER="./docker/"
 
 export BASE_FOLDER=$BASE_FOLDER
 

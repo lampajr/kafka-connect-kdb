@@ -17,3 +17,5 @@ upd:insert;
 
 / connect to ticker plant for (schema;(logcount;log))
 .u.rep .(hopen `$":",.u.x 0)"(.u.sub[`;`];`.u `i`L)";
+
+"Started RDB"

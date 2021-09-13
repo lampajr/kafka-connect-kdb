@@ -43,6 +43,7 @@ COPY tick.q /tick.q
 COPY tick/r.q /tick/r.q
 COPY tick/u.q /tick/u.q
 COPY tick/sym.q /tick/sym.q
+COPY tick/feedhandler.q /tick/feedhandler.q
 COPY entrypoint.sh /entrypoint.sh
 
 RUN chown root:root /entrypoint.sh; chmod 777 /entrypoint.sh
