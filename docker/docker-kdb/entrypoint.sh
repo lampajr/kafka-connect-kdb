@@ -32,7 +32,7 @@ exec /q/l32/q tick.q sym . -p 5010 /tick &
 echo "Tickerplant started"
 
 # Real-time kdb subscriber
-exec /q/l32/q /tick/r.q :5010 -p 5011 /rdb &
+exec /q/l32/q /tick/r.q :5010 -p 5011 /rdb
 
 # Start feed handler
-exec /q/l32/q /tick/feedhandler.q /feed
+#exec /q/l32/q /tick/feedhandler.q /feed
