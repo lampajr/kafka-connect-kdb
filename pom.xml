@@ -69,6 +69,7 @@
         <mockito.version>3.9.0</mockito.version>
         <confluent.hub.packaging.version>0.12.0</confluent.hub.packaging.version>
         <docker-compose-rule.version>1.7.0</docker-compose-rule.version>
+        <commons-configuration.version>1.6</commons-configuration.version>
 
         <maven.checkstyle.version>3.1.2</maven.checkstyle.version>
         <com-puppycrawl-tools.version>8.45</com-puppycrawl-tools.version>
@@ -83,6 +84,14 @@
             <artifactId>connect-api</artifactId>
             <version>${kafka.version}</version>
             <scope>provided</scope>
+        </dependency>
+
+        <!-- Allows to read various configuration properties.
+             https://commons.apache.org/proper/commons-configuration/ -->
+        <dependency>
+            <groupId>commons-configuration</groupId>
+            <artifactId>commons-configuration</artifactId>
+            <version>${commons-configuration.version}</version>
         </dependency>
 
         <!-- test -->

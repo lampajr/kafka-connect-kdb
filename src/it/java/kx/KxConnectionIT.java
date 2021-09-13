@@ -28,7 +28,7 @@ public class KxConnectionIT {
 
   @Before
   public void setUp() throws Exception {
-    kxConn = new C(host, port, "user:pwd", false);
+    kxConn = new C(host, port);
   }
 
   @Test
