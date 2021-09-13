@@ -52,7 +52,7 @@ public abstract class AbstractDockerIntegratedTest {
       .build();
 
   @Before
-  public void mainSetUp() throws C.KException, IOException, InterruptedException {
+  public void setUp() throws C.KException, IOException, InterruptedException {
     // starting docker cluster
     dockerRule.before();
 
