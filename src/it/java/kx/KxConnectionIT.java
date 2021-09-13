@@ -16,17 +16,17 @@
 package kx;
 
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 import support.AbstractDockerIntegratedTest;
 
-import static org.junit.Assert.*;
+import java.io.IOException;
 
 public class KxConnectionIT extends AbstractDockerIntegratedTest {
 
   @Test
-  public void writeAsyncTest() {
+  public void writeAsyncTest() throws IOException, C.KException {
     Assert.assertNotNull(kxConn);
+    C.Dict res = (C.Dict) kxConn.k("meta", "trade");
   }
 
 }

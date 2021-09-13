@@ -1062,6 +1062,7 @@ public class C {
     while (rBuff[rBuffPos] != 0) {
       rBuffPos++;
     }
+    rBuffPos++;
     return (startPos == rBuffPos - 1) ? "" : new String(rBuff, startPos, rBuffPos - 1 - startPos, encoding);
   }
 
