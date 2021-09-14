@@ -1713,7 +1713,7 @@ public class C {
    * @param x The first argument to the function named in s
    * @param y The second argument to the function named in s
    * @param z The third argument to the function named in s
-   * @param w The third argument to the function named in s
+   * @param w The fourth argument to the function named in s
    * @throws IOException if an I/O error occurs.
    */
   public void ks(String s, Object x, Object y, Object z, Object w) throws IOException {
