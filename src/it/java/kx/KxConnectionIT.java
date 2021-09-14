@@ -16,6 +16,7 @@
 package kx;
 
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import support.AbstractDockerIntegratedTest;
 
@@ -23,10 +24,52 @@ import java.io.IOException;
 
 public class KxConnectionIT extends AbstractDockerIntegratedTest {
 
-  @Test
-  public void writeAsyncTest() throws IOException, C.KException {
+  @Before
+  public void setUp() throws C.KException, IOException {
+    logger.info("Setting up kx connection {}:{};{};{}", kdbHost, kdbPort, kdbAuth, enableTls);
+    kxConn = new C(kdbHost, kdbPort, kdbAuth, enableTls);
     Assert.assertNotNull(kxConn);
-    C.Dict res = (C.Dict) kxConn.k("meta", "trade");
+  }
+
+  @Test
+  public void writeSyncTest() throws C.KException, IOException {
+    //Create typed arrays for holding data
+    String[] sym = new String[] {"IBM"};
+    double[] bid = new double[] {100.25};
+    double[] ask = new double[] {100.26};
+    int[] bSize = new int[] {1000};
+    int[] aSize = new int[] {1000};
+    //Create Object[] for holding typed arrays
+    Object[] data = new Object[] {sym, bid, ask, bSize, aSize};
+
+    // use sync writes since we can check if exceptions are thrown
+    kxConn.k(".u.upd", "quote", data);
+  }
+
+  @Test
+  public void throwLengthErrorTest() throws IOException {
+    //Create typed arrays for holding data
+    String[] sym = new String[] {"IBM"};
+    double[] bid = new double[] {100};
+    double[] ask = new double[] {100.26};
+    int[] bSize = new int[] {1000};
+    // provide a wrong number of params, 1 less
+    int[] aSize = new int[] {1000};
+    //Create Object[] for holding typed arrays
+    Object[] data = new Object[] {sym, bid, ask, bSize};
+
+    // use sync writes since we can check if exceptions are thrown
+    try {
+      kxConn.k(".u.upd", "quote", data);
+      Assert.fail();
+    } catch (C.KException e) {
+      Assert.assertEquals("length", e.getMessage());
+    }
+  }
+
+  @Test
+  public void showTable() throws IOException, C.KException {
+    kxConn.k("{x+y;show quote}", 1,2);
   }
 
 }

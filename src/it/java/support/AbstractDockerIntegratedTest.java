@@ -18,7 +18,9 @@ package support;
 import com.palantir.docker.compose.DockerComposeRule;
 import kx.C;
 import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -51,17 +53,14 @@ public abstract class AbstractDockerIntegratedTest {
       .file(dockerRuleFilename)
       .build();
 
-  @Before
-  public void setUp() throws C.KException, IOException, InterruptedException {
+  @BeforeClass
+  public static void beforeAll() throws IOException, InterruptedException {
     // starting docker cluster
     dockerRule.before();
-
-    logger.info("Setting up kx connection {}:{};{};{}", kdbHost, kdbPort, kdbAuth, enableTls);
-    kxConn = new C(kdbHost, kdbPort, kdbAuth, enableTls);
   }
 
-  @After
-  public void tearDown() {
+  @AfterClass
+  public static void afterAll() {
     dockerRule.after();
   }
 }
