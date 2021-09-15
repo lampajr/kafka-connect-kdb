@@ -16,13 +16,19 @@
 package com.lampajr.kafka.connect.kdb.sink;
 
 import com.lampajr.kafka.connect.kdb.VersionUtil;
+import com.lampajr.kafka.connect.kdb.writer.Writer;
+import kx.C;
+import org.apache.kafka.common.TopicPartition;
 import org.apache.kafka.connect.sink.SinkRecord;
 import org.apache.kafka.connect.sink.SinkTask;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Main KDB sink task
@@ -35,8 +41,10 @@ public class KdbSinkTask extends SinkTask {
   // kdb sink configuration
   private KdbSinkConfig config;
 
+  private Map<TopicPartition, Long> offsetMap = new HashMap<>();
+
   // writer: flushes data to kdb
-  //private KdbWriter writer;
+  private Writer writer;
 
   @Override
   public String version() {
@@ -52,6 +60,11 @@ public class KdbSinkTask extends SinkTask {
 
     // init writer
     initWriter();
+
+    // load offset only if enabled
+    if (isUsingOffset()) {
+      loadOffsets(this.context.assignment());
+    }
   }
 
   @Override
@@ -71,5 +84,54 @@ public class KdbSinkTask extends SinkTask {
    */
   private void initWriter() {
 
+  }
+
+  /**
+   * Load the offset for all topic partitions
+   *
+   * @param partitions set of topic partitions
+   */
+  private void loadOffsets(Set<TopicPartition> partitions) {
+    logger.info("Loading offsets..");
+    offsetMap.clear();
+
+    for (TopicPartition partition : partitions) {
+      try {
+        Long offset = isUsingPartition()
+            ? writer.getOffset(partition.topic(), partition.partition())
+            : writer.getOffset(partition.topic());
+
+        logger.info("Retrieved offset <{}> for topic <{}> and partition <{}>.",
+            offset, partition.topic(), partition.partition());
+
+        if (offset > -1) {
+          offsetMap.put(partition, offset + 1);
+        }
+      } catch (C.KException | IOException e) {
+        logger.error(String.format("Error retrieving offset for topic %s.", partition.topic()), e);
+      }
+    }
+  }
+
+  /**
+   * Return true if skipDbOffset is set to false and the writeMode is either WITH_OFFSET or FULL
+   *
+   * @return true if the offset is managed in kdb, false otherwise
+   */
+  private boolean isUsingOffset() {
+    return !this.config.skipOffset &&
+        (this.config.writeMode == KdbSinkConfig.WriteMode.WITH_OFFSET
+            || this.config.writeMode == KdbSinkConfig.WriteMode.FULL);
+  }
+
+  /**
+   * Return true if the system is managed to handle the partition also on kdb side,
+   * i.e., if the writeMode is either WITH_PARTITION or FULL
+   *
+   * @return true if the partition is managed in kdb, false otherwise
+   */
+  private boolean isUsingPartition() {
+    return this.config.writeMode == KdbSinkConfig.WriteMode.WITH_PARTITION
+        || this.config.writeMode == KdbSinkConfig.WriteMode.FULL;
   }
 }
