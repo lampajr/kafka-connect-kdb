@@ -16,6 +16,7 @@
 package com.lampajr.kafka.connect.kdb.sink;
 
 import com.lampajr.kafka.connect.kdb.VersionUtil;
+import com.lampajr.kafka.connect.kdb.writer.KdbWriter;
 import com.lampajr.kafka.connect.kdb.writer.Writer;
 import kx.C;
 import org.apache.kafka.common.TopicPartition;
@@ -36,7 +37,7 @@ import java.util.Set;
  */
 public class KdbSinkTask extends SinkTask {
 
-  private static Logger logger = LoggerFactory.getLogger(KdbSinkTask.class);
+  private final Logger logger = LoggerFactory.getLogger(KdbSinkTask.class);
 
   // kdb sink configuration
   private KdbSinkConfig config;
@@ -69,11 +70,12 @@ public class KdbSinkTask extends SinkTask {
 
   @Override
   public void put(Collection<SinkRecord> collection) {
-
+    // TODO: implement
   }
 
   @Override
   public void stop() {
+    writer.stop();
     logger.info("Stopping KDB {} Sink task..", config.connectorName);
   }
 
@@ -83,7 +85,8 @@ public class KdbSinkTask extends SinkTask {
    * main goal is to flush data to the kdb server
    */
   private void initWriter() {
-
+    writer = new KdbWriter(this.config);
+    writer.start();
   }
 
   /**

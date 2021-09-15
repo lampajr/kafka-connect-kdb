@@ -16,8 +16,11 @@
 package com.lampajr.kafka.connect.kdb.writer;
 
 import com.lampajr.kafka.connect.kdb.sink.KdbSinkConfig;
+import com.lampajr.kafka.connect.kdb.storage.Storage;
 import kx.C;
 import org.apache.kafka.connect.sink.SinkRecord;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.List;
@@ -28,18 +31,25 @@ import java.util.List;
  */
 public class KdbWriter implements Writer {
 
-  public KdbWriter(KdbSinkConfig config) {
+  private final Logger logger = LoggerFactory.getLogger(KdbWriter.class);
 
+  private final Storage storage;
+
+  public KdbWriter(KdbSinkConfig config) {
+    // in according to the provided configuration, use the correct storage instance
+    storage = null;
   }
 
   @Override
   public void start() {
-
+    logger.info("Starting kdb writer..");
+    // try opening storage connection
   }
 
   @Override
   public void stop() {
-
+    logger.info("Stopping kdb writer..");
+    // close storage connection
   }
 
   @Override
@@ -54,11 +64,11 @@ public class KdbWriter implements Writer {
 
   @Override
   public Long getOffset(String topic) throws IOException, C.KException {
-    return null;
+    return -1L;
   }
 
   @Override
   public Long getOffset(String topic, int partition) throws IOException, C.KException {
-    return null;
+    return -1L;
   }
 }
