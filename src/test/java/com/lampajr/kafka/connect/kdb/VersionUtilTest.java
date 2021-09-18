@@ -15,10 +15,11 @@
  */
 package com.lampajr.kafka.connect.kdb;
 
+import com.lampajr.kafka.connect.kdb.utils.BaseTest;
 import org.junit.Assert;
 import org.junit.Test;
 
-public class VersionUtilTest extends AbstractTest {
+public class VersionUtilTest extends BaseTest {
 
     @Test
     public void getVersion() {

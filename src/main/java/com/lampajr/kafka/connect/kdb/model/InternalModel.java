@@ -15,9 +15,6 @@
  */
 package com.lampajr.kafka.connect.kdb.model;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.lang.reflect.Field;
 
 /**
@@ -27,28 +24,22 @@ import java.lang.reflect.Field;
  */
 public abstract class InternalModel {
 
-  protected final Logger logger = LoggerFactory.getLogger(getClass());
-
   /**
    * Converts an internal model object into an array of values.
    * Ex. new MyModel("test", 10) ==> ["test", 10]
    *
    * @return an array containing the values of the class object fields
+   * @throws IllegalAccessException if something went wrong accessing model's fields
    */
-  public Object[] toArray() {
+  public Object[] toArray() throws IllegalAccessException {
     Field[] fields = InternalModel.super.getClass().getDeclaredFields();
     Object[] values = new Object[fields.length];
 
     for (int i = 0; i < values.length; i++) {
       Field f = fields[i];
 
-      try {
-        Object val = f.get(this);
-        values[i] = val;
-      } catch (IllegalAccessException e) {
-        logger.error("Error converting model object to array", e);
-        return new Object[] {};
-      }
+      Object val = f.get(this);
+      values[i] = val;
     }
 
     return values;

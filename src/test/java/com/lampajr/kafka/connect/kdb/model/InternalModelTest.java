@@ -15,15 +15,13 @@
  */
 package com.lampajr.kafka.connect.kdb.model;
 
-import com.lampajr.kafka.connect.kdb.AbstractTest;
+import com.lampajr.kafka.connect.kdb.utils.BaseTest;
 import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.Arrays;
 
-import static org.junit.Assert.*;
-
-public class InternalModelTest extends AbstractTest {
+public class InternalModelTest extends BaseTest {
 
   // class example that extends the generic internal model
   static class MyModel extends InternalModel {
@@ -45,7 +43,7 @@ public class InternalModelTest extends AbstractTest {
   }
 
   @Test
-  public void toArrayTest() {
+  public void toArrayTest() throws IllegalAccessException {
     InternalModel m = new MyModel("test", 10, 829759843579872L, 1.5F, 0.389275, 'x');
     Assert.assertEquals("[test, 10, 829759843579872, 1.5, 0.389275, x]", Arrays.toString(m.toArray()));
   }

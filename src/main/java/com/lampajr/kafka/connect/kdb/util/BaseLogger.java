@@ -15,25 +15,16 @@
  */
 package com.lampajr.kafka.connect.kdb.util;
 
-import java.util.Map;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
- * Utilities for the common connector configuration properties
+ * Generic logger class, all subclasses will inherit a logger object.
  */
-public class ConnectorConfigUtils extends BaseLogger {
-  /**
-   * Connector name config key
-   */
-  public static final String CONNECTOR_NAME_CONFIG = "name";
+public abstract class BaseLogger {
 
   /**
-   * Retrieve the connector name from the configuration props map
-   *
-   * @param props configs
-   * @return the connector's name
+   * Logger
    */
-  public static String getConnectorName(Map<?, ?> props) {
-    Object name = props.get(CONNECTOR_NAME_CONFIG);
-    return name == null ? null : name.toString();
-  }
+  protected final Logger logger = LoggerFactory.getLogger(getClass());
 }

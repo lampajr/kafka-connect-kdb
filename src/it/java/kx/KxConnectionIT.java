@@ -18,11 +18,11 @@ package kx;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import support.AbstractDockerIntegratedTest;
+import support.BaseDockerIntegrationTest;
 
 import java.io.IOException;
 
-public class KxConnectionIT extends AbstractDockerIntegratedTest {
+public class KxConnectionIT extends BaseDockerIntegrationTest {
 
   @Before
   public void setUp() throws C.KException, IOException {

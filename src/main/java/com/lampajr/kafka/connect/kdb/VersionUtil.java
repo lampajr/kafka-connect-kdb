@@ -30,6 +30,7 @@ public class VersionUtil {
 
   /**
    * Get the version of the specified class
+   *
    * @param cls class
    * @return version
    */

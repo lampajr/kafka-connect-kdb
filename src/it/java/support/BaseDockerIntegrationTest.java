@@ -17,15 +17,13 @@ package support;
 
 import com.palantir.docker.compose.DockerComposeRule;
 import kx.C;
-import org.junit.After;
 import org.junit.AfterClass;
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.File;
 import java.io.IOException;
-import java.net.URL;
 
 /**
  * Abstract integration test that uses a dockerized container.
@@ -33,12 +31,12 @@ import java.net.URL;
  * - Tickerplant kdb+ architecture
  * - Kafka server [TODO]
  */
-public abstract class AbstractDockerIntegratedTest {
+public abstract class BaseDockerIntegrationTest {
+
+  protected final Logger logger = LoggerFactory.getLogger(getClass());
 
   // TODO: fix this path
   private static final String dockerRuleFilename = "target/test-classes/docker-compose-kdb-it.yml";
-
-  protected Logger logger = LoggerFactory.getLogger(getClass());
 
   // connection properties [TODO: use application-test.properties]
   protected String kdbHost = "127.0.0.1";

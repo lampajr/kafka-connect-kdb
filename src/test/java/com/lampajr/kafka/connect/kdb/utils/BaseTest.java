@@ -13,11 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.lampajr.kafka.connect.kdb;
+package com.lampajr.kafka.connect.kdb.utils;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public abstract class AbstractTest {
-    protected final Logger logger = LoggerFactory.getLogger(getClass());
+public abstract class BaseTest {
+  protected final Logger logger = LoggerFactory.getLogger(getClass());
 }

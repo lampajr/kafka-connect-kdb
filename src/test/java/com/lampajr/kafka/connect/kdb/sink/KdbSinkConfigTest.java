@@ -15,7 +15,7 @@
  */
 package com.lampajr.kafka.connect.kdb.sink;
 
-import com.lampajr.kafka.connect.kdb.AbstractTest;
+import com.lampajr.kafka.connect.kdb.utils.BaseTest;
 import org.apache.kafka.common.config.ConfigException;
 import org.junit.Assert;
 import org.junit.Before;
@@ -24,7 +24,7 @@ import org.junit.Test;
 import java.util.HashMap;
 import java.util.Map;
 
-public class KdbSinkConfigTest extends AbstractTest {
+public class KdbSinkConfigTest extends BaseTest {
 
   private KdbSinkConfig config;
   private Map<String, Object> props;

@@ -20,8 +20,6 @@ import com.lampajr.kafka.connect.kdb.sink.KdbSinkConfig;
 import com.lampajr.kafka.connect.kdb.storage.Storage;
 import kx.C;
 import org.apache.kafka.connect.sink.SinkRecord;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.List;
@@ -30,14 +28,17 @@ import java.util.List;
  * Kdb implementation of a generic writer
  * TODO: implement
  */
-public class KdbWriter implements Writer {
-
-  private final Logger logger = LoggerFactory.getLogger(KdbWriter.class);
+public class KdbWriter extends Writer {
 
   private final Storage storage;
 
   private final Parser<?> parser;
 
+  /**
+   * Creates a KDB writer instance starting from KDB sink connector configuration
+   *
+   * @param config connector configuration
+   */
   public KdbWriter(KdbSinkConfig config) {
     // in according to the provided configuration, use the correct storage instance
     storage = null;

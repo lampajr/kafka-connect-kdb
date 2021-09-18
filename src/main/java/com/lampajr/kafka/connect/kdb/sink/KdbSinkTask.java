@@ -37,7 +37,7 @@ import java.util.Set;
  */
 public class KdbSinkTask extends SinkTask {
 
-  private final Logger logger = LoggerFactory.getLogger(KdbSinkTask.class);
+  private final Logger logger = LoggerFactory.getLogger(getClass());
 
   // kdb sink configuration
   private KdbSinkConfig config;
