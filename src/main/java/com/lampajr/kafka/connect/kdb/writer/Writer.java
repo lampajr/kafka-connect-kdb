@@ -15,13 +15,32 @@
  */
 package com.lampajr.kafka.connect.kdb.writer;
 
+import com.lampajr.kafka.connect.kdb.parser.Parser;
 import kx.C;
 import org.apache.kafka.connect.sink.SinkRecord;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 public interface Writer {
+
+  /**
+   * Dynamically load a parser object
+   *
+   * @param className fullname of the parser class
+   * @return a new instance of the loaded parser
+   * @throws ClassNotFoundException
+   * @throws NoSuchMethodException
+   * @throws InvocationTargetException
+   * @throws InstantiationException
+   * @throws IllegalAccessException
+   */
+  default Parser<?> loadParser(String className) throws ClassNotFoundException, NoSuchMethodException,
+      InvocationTargetException, InstantiationException, IllegalAccessException {
+    ClassLoader loader = Writer.class.getClassLoader();
+    return (Parser<?>) loader.loadClass(className).getDeclaredConstructor().newInstance();
+  }
 
   /**
    * Start the writer

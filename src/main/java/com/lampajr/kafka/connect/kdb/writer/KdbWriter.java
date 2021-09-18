@@ -15,6 +15,7 @@
  */
 package com.lampajr.kafka.connect.kdb.writer;
 
+import com.lampajr.kafka.connect.kdb.parser.Parser;
 import com.lampajr.kafka.connect.kdb.sink.KdbSinkConfig;
 import com.lampajr.kafka.connect.kdb.storage.Storage;
 import kx.C;
@@ -35,9 +36,14 @@ public class KdbWriter implements Writer {
 
   private final Storage storage;
 
+  private final Parser<?> parser;
+
   public KdbWriter(KdbSinkConfig config) {
     // in according to the provided configuration, use the correct storage instance
     storage = null;
+
+    // dynamically load a parser class in according to the provided configuration
+    parser = null;
   }
 
   @Override
