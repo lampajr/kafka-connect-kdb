@@ -20,6 +20,7 @@ import com.lampajr.kafka.connect.kdb.writer.KdbWriter;
 import com.lampajr.kafka.connect.kdb.writer.Writer;
 import kx.C;
 import org.apache.kafka.common.TopicPartition;
+import org.apache.kafka.connect.errors.RetriableException;
 import org.apache.kafka.connect.sink.SinkRecord;
 import org.apache.kafka.connect.sink.SinkTask;
 import org.slf4j.Logger;
@@ -60,7 +61,13 @@ public class KdbSinkTask extends SinkTask {
     config = new KdbSinkConfig(props);
 
     // init writer
-    initWriter();
+    try {
+      initWriter();
+    } catch (C.KException e) {
+      throw new RuntimeException("Kdb+ server connection failed due to a kx error.", e);
+    } catch (IOException e) {
+      throw new RetriableException("Unable to establish the kdb+ server connection, retrying...");
+    }
 
     // load offset only if enabled
     if (isUsingOffset()) {
@@ -84,7 +91,7 @@ public class KdbSinkTask extends SinkTask {
    * Initialize the kdb writer service which
    * main goal is to flush data to the kdb server
    */
-  private void initWriter() {
+  private void initWriter() throws C.KException, IOException {
     writer = new KdbWriter(this.config);
     writer.start();
   }

@@ -19,10 +19,12 @@ import com.lampajr.kafka.connect.kdb.model.InternalModel;
 import com.lampajr.kafka.connect.kdb.parser.Parser;
 import com.lampajr.kafka.connect.kdb.sink.KdbSinkConfig;
 import com.lampajr.kafka.connect.kdb.utils.TestUtils;
+import kx.C;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -53,7 +55,7 @@ public class WriterTest {
   private Writer writer;
 
   @Before
-  public void setUp() {
+  public void setUp() throws C.KException, IOException {
     writer = new KdbWriter(TestUtils.createConfigs());
   }
 

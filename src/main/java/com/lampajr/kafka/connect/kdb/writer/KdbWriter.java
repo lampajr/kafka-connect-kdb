@@ -17,6 +17,7 @@ package com.lampajr.kafka.connect.kdb.writer;
 
 import com.lampajr.kafka.connect.kdb.parser.Parser;
 import com.lampajr.kafka.connect.kdb.sink.KdbSinkConfig;
+import com.lampajr.kafka.connect.kdb.storage.KdbStorage;
 import com.lampajr.kafka.connect.kdb.storage.Storage;
 import kx.C;
 import org.apache.kafka.connect.sink.SinkRecord;
@@ -25,8 +26,17 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * Kdb implementation of a generic writer
- * TODO: implement
+ * Kdb implementation of a generic writer.
+ * <p>
+ * This writer manages all the required steps to flush the data to the remote kdb server:
+ * 1. startup:
+ * * load the specific parsers instance
+ * * load the specific kdb storage instance
+ * 2. writes:
+ * * receive a list of sink records
+ * * parse byte array (single records) into some intermediate representation
+ * * transform an intermediate representation into an internal model
+ * * flushes data to the kdb server using the kdb storage
  */
 public class KdbWriter extends Writer {
 
@@ -39,9 +49,15 @@ public class KdbWriter extends Writer {
    *
    * @param config connector configuration
    */
-  public KdbWriter(KdbSinkConfig config) {
+  public KdbWriter(KdbSinkConfig config) throws C.KException, IOException {
     // in according to the provided configuration, use the correct storage instance
-    storage = null;
+    storage = new KdbStorage(
+        config.kdbHost,
+        config.kdbReadPort,
+        config.kdbWritePort,
+        config.kdbAuth,
+        false
+    );
 
     // dynamically load a parser class in according to the provided configuration
     parser = null;

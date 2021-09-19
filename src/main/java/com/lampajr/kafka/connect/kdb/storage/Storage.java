@@ -15,9 +15,59 @@
  */
 package com.lampajr.kafka.connect.kdb.storage;
 
-/**
- * Abstract storage which is in charge to manage the connection with the target system
- */
-public interface Storage {
+import kx.C;
+import kx.Connection;
 
+import java.io.IOException;
+
+/**
+ * Abstract storage which is in charge to manage the connection with the target kdb server.
+ * <p>
+ * Its implementation is mainly based on the Kdb driver usage [@see kx.C]
+ */
+public abstract class Storage {
+
+  /**
+   * Represents a kdb+ remote write connection
+   */
+  protected Connection writeConnection;
+
+  /**
+   * Represents a kdb+ remote read connection
+   */
+  protected Connection readConnection;
+
+  /**
+   * Synchronously invokes a q function to the target kdb+ server using the connection object
+   *
+   * @param fn     kdb+/q function
+   * @param params fn params
+   */
+  protected Object invoke(String fn, Object... params) throws C.KException, IOException {
+    Object[] paramArray = {fn.toCharArray(), params};
+    return writeConnection.k(fn, paramArray);
+  }
+
+  /**
+   * Asynchronously invokes a q function to the target kdb+ server using the connection object
+   *
+   * @param fn     kdb+/q function
+   * @param params fn params
+   */
+  protected void invokeAsync(String fn, Object... params) throws IOException {
+    Object[] paramArray = {fn.toCharArray(), params};
+    writeConnection.ks(fn, paramArray);
+  }
+
+  /**
+   * Synchronously invokes a q function to the target kdb+ server using the connection
+   * object aiming to retrieve some data
+   *
+   * @param fn     kdb+/q function
+   * @param params fn params
+   */
+  protected Object read(String fn, Object... params) throws C.KException, IOException {
+    Object[] paramArray = {fn.toCharArray(), params};
+    return readConnection.k(fn, paramArray);
+  }
 }

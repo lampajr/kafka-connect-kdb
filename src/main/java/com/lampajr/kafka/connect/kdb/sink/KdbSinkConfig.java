@@ -226,7 +226,7 @@ public class KdbSinkConfig extends AbstractConfig {
           KDB_SSL_ENABLED_DISPLAY
       ).define(
           KDB_PORT_READ_CONFIG,
-          ConfigDef.Type.LONG,
+          ConfigDef.Type.INT,
           ConfigDef.NO_DEFAULT_VALUE,
           TCP_PORT_VALIDATOR, // range (0, 65535)
           ConfigDef.Importance.HIGH,
@@ -237,7 +237,7 @@ public class KdbSinkConfig extends AbstractConfig {
           KDB_PORT_READ_DISPLAY
       ).define(
           KDB_PORT_WRITE_CONFIG,
-          ConfigDef.Type.LONG,
+          ConfigDef.Type.INT,
           ConfigDef.NO_DEFAULT_VALUE,
           TCP_PORT_VALIDATOR, // range (0, 65535)
           ConfigDef.Importance.HIGH,
@@ -342,11 +342,11 @@ public class KdbSinkConfig extends AbstractConfig {
   /**
    * kdb write port
    */
-  public final Long kdbWritePort;
+  public final Integer kdbWritePort;
   /**
    * kdb read port
    */
-  public final Long kdbReadPort;
+  public final Integer kdbReadPort;
   /**
    * kdb write mode
    */
@@ -384,8 +384,8 @@ public class KdbSinkConfig extends AbstractConfig {
     this.kdbHost = getString(KDB_HOST_CONFIG);
     this.kdbAuth = getString(KDB_AUTH_CONFIG);
     this.sslEnabled = getBoolean(KDB_SSL_ENABLED_CONFIG);
-    this.kdbWritePort = getLong(KDB_PORT_WRITE_CONFIG);
-    this.kdbReadPort = getLong(KDB_PORT_READ_CONFIG);
+    this.kdbWritePort = getInt(KDB_PORT_WRITE_CONFIG);
+    this.kdbReadPort = getInt(KDB_PORT_READ_CONFIG);
     this.writeMode = WriteMode.valueOf(getString(KDB_WRITE_MODE_CONFIG).toUpperCase());
     this.asyncWrite = getBoolean(KDB_ASYNC_WRITE_CONFIG);
     this.writeFn = getString(KDB_WRITE_FN_CONFIG);

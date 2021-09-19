@@ -16,6 +16,8 @@
 
 package kx;
 
+import javax.net.ssl.SSLSocket;
+import javax.net.ssl.SSLSocketFactory;
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -34,8 +36,6 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.TimeZone;
 import java.util.UUID;
-import javax.net.ssl.SSLSocket;
-import javax.net.ssl.SSLSocketFactory;
 
 /**
  * Connector class for interfacing with a kdb+ process. This class is essentially a serializer/deserializer of java types
@@ -61,7 +61,7 @@ import javax.net.ssl.SSLSocketFactory;
  *     When the connection is no longer required, it may be closed via connection.close();
  * </ol>
  */
-public class C {
+public class C implements Connection {
   /**
    * Encoding specifies the character encoding to use when [de]-serializing strings.
    */

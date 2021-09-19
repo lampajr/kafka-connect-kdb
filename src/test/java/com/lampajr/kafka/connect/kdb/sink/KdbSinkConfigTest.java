@@ -103,8 +103,8 @@ public class KdbSinkConfigTest extends BaseTest {
   private void checkProvidedParams() {
     Assert.assertEquals("127.0.0.1", config.kdbHost);
     Assert.assertEquals("username:pass", config.kdbAuth);
-    Assert.assertEquals(Long.valueOf(8080), config.kdbWritePort);
-    Assert.assertEquals(Long.valueOf(8081), config.kdbReadPort);
+    Assert.assertEquals(Integer.valueOf(8080), config.kdbWritePort);
+    Assert.assertEquals(Integer.valueOf(8081), config.kdbReadPort);
     Assert.assertEquals(".u.upd", config.writeFn);
     Assert.assertEquals("tableName", config.tableName);
   }
