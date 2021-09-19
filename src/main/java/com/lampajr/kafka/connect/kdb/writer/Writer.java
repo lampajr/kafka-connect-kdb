@@ -56,7 +56,7 @@ public abstract class Writer extends BaseLogger {
   /**
    * Start the writer
    */
-  public abstract void start();
+  public abstract void start() throws C.KException, IOException;
 
   /**
    * Stops the writer

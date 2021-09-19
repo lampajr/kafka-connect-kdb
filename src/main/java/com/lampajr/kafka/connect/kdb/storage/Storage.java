@@ -38,6 +38,11 @@ public abstract class Storage {
   protected Connection readConnection;
 
   /**
+   * Function that opens all needed connections
+   */
+  public abstract void open() throws C.KException, IOException;
+
+  /**
    * Synchronously invokes a q function to the target kdb+ server using the connection object
    *
    * @param fn     kdb+/q function

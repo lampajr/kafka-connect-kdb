@@ -24,19 +24,32 @@ import java.io.IOException;
  */
 public class KdbStorage extends Storage {
 
+  private String host;
+  private int readPort;
+  private int writePort;
+  private String auth;
+  private boolean enableTls;
+
   /**
-   * Create both kx/kdb+ read and write connections
+   * Save connection configurations
    *
-   * @param host kdb+ hostname
-   * @param readPort kdb+ server read port
+   * @param host      kdb+ hostname
+   * @param readPort  kdb+ server read port
    * @param writePort kdb+ server write port
-   * @param auth kdb+ server auth user:pass
-   * @param tls  enableTls
-   * @throws C.KException an error occurred in the kdb+/q process
-   * @throws IOException  an error occurred in the connection
+   * @param auth      kdb+ server auth user:pass
+   * @param enableTls enableTls
    */
-  public KdbStorage(String host, int readPort, int writePort, String auth, boolean tls) throws C.KException, IOException {
-    readConnection = new kx.C(host, readPort, auth, tls);
-    writeConnection = new kx.C(host, writePort, auth, tls);
+  public KdbStorage(String host, int readPort, int writePort, String auth, boolean enableTls) {
+    this.host = host;
+    this.readPort = readPort;
+    this.writePort = writePort;
+    this.auth = auth;
+    this.enableTls = enableTls;
+  }
+
+  @Override
+  public void open() throws C.KException, IOException {
+    readConnection = new kx.C(host, readPort, auth, enableTls);
+    writeConnection = new kx.C(host, writePort, auth, enableTls);
   }
 }

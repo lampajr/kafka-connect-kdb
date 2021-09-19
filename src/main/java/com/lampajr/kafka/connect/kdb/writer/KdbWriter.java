@@ -15,6 +15,7 @@
  */
 package com.lampajr.kafka.connect.kdb.writer;
 
+import com.google.common.base.Preconditions;
 import com.lampajr.kafka.connect.kdb.parser.Parser;
 import com.lampajr.kafka.connect.kdb.sink.KdbSinkConfig;
 import com.lampajr.kafka.connect.kdb.storage.KdbStorage;
@@ -40,16 +41,28 @@ import java.util.List;
  */
 public class KdbWriter extends Writer {
 
-  private final Storage storage;
+  private final KdbSinkConfig config;
 
-  private final Parser<?> parser;
+  private Storage storage;
+
+  private Parser<?> parser;
 
   /**
    * Creates a KDB writer instance starting from KDB sink connector configuration
    *
    * @param config connector configuration
    */
-  public KdbWriter(KdbSinkConfig config) throws C.KException, IOException {
+  public KdbWriter(KdbSinkConfig config) {
+    this.config = config;
+  }
+
+  /**
+   * Initialize the kdb writer
+   *
+   * @throws C.KException error occurred in the remote q process
+   * @throws IOException  error occurred in the communication
+   */
+  public void init() throws C.KException, IOException {
     // in according to the provided configuration, use the correct storage instance
     storage = new KdbStorage(
         config.kdbHost,
@@ -64,9 +77,15 @@ public class KdbWriter extends Writer {
   }
 
   @Override
-  public void start() {
+  public void start() throws C.KException, IOException {
     logger.info("Starting kdb writer..");
+    Preconditions.checkState(storage != null,
+        "The storage is null, have you initialized the writer?");
+    Preconditions.checkState(parser != null,
+        "The parser is null, have you initialized the writer?");
+
     // try opening storage connection
+    storage.open();
   }
 
   @Override
