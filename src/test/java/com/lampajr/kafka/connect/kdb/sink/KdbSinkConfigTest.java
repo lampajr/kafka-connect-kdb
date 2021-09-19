@@ -120,5 +120,7 @@ public class KdbSinkConfigTest extends BaseTest {
     props.put(KdbSinkConfig.KDB_PORT_READ_CONFIG, 8081);
     props.put(KdbSinkConfig.KDB_WRITE_FN_CONFIG, ".u.upd");
     props.put(KdbSinkConfig.KDB_TABLE_NAME_CONFIG, "tableName");
+    // fake parser
+    props.put(KdbSinkConfig.KDB_PARSER_CLASS_CONFIG, "com.lampajr.kafka.connect.kdb.ExampleParser");
   }
 }

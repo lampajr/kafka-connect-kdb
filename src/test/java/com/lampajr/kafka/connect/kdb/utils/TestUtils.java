@@ -23,6 +23,10 @@ import java.util.Map;
 public class TestUtils {
 
   public static KdbSinkConfig createConfigs() {
+    return createConfigs("com.lampajr.kafka.connect.kdb.ExampleParser");
+  }
+
+  public static KdbSinkConfig createConfigs(String parserClassName) {
     Map<String, Object> props = new HashMap<>();
 
     // required
@@ -32,6 +36,7 @@ public class TestUtils {
     props.put(KdbSinkConfig.KDB_PORT_READ_CONFIG, 8081);
     props.put(KdbSinkConfig.KDB_WRITE_FN_CONFIG, ".u.upd");
     props.put(KdbSinkConfig.KDB_TABLE_NAME_CONFIG, "tableName");
+    props.put(KdbSinkConfig.KDB_PARSER_CLASS_CONFIG, parserClassName);
 
     return new KdbSinkConfig(props);
   }

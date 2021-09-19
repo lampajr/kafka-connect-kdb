@@ -153,14 +153,32 @@ public class KdbSinkConfig extends AbstractConfig {
   private static final String KDB_TABLE_NAME_DISPLAY = "Kdb Table Name";
   private static final String KDB_TABLE_NAME_DOC = "The kdb+ table name in which the data must be flushed to.";
 
+  /**
+   * Kafka parser class that will be loaded at runtime.
+   * This will be used to parse kafka records into kdb models.
+   * NB: this class must extend the abstract Parser class [@see com.lampajr.kafka.connect.kdb.parser.Parser]
+   */
+  public static final String KDB_PARSER_CLASS_CONFIG = KDB_PREFIX + ".parser.class";
+  private static final String KDB_PARSER_CLASS_DISPLAY = "Kafka Parser Class";
+  private static final String KDB_PARSER_CLASS_DOC = "A parser class object that will be used to parse and transform " +
+      "kafka records into kdb+ table models.";
+
   // Defaults
-  /** Default value for KDB_SSL_ENABLED_CONFIG */
+  /**
+   * Default value for KDB_SSL_ENABLED_CONFIG
+   */
   public static final Boolean KDB_SSL_ENABLED_DEFAULT = true;
-  /** Default value for KDB_SKIP_OFFSET_CONFIG */
+  /**
+   * Default value for KDB_SKIP_OFFSET_CONFIG
+   */
   public static final Boolean KDB_SKIP_OFFSET_DEFAULT = false;
-  /** Default value for KDB_WRITE_MODE_CONFIG */
+  /**
+   * Default value for KDB_WRITE_MODE_CONFIG
+   */
   public static final WriteMode KDB_WRITE_MODE_DEFAULT = WriteMode.SIMPLE;
-  /** Default value for KDB_ASYNC_WRITE_CONFIG */
+  /**
+   * Default value for KDB_ASYNC_WRITE_CONFIG
+   */
   public static final Boolean KDB_ASYNC_WRITE_DEFAULT = true;
 
   // groups
@@ -171,7 +189,9 @@ public class KdbSinkConfig extends AbstractConfig {
   // validators
   private static final ConfigDef.Range TCP_PORT_VALIDATOR = ConfigDef.Range.between(0, 65535);
 
-  /** Kdb configuration definition */
+  /**
+   * Kdb configuration definition
+   */
   public static final ConfigDef CONFIG_DEF = new ConfigDef()
       // connection
       .define(
@@ -269,6 +289,16 @@ public class KdbSinkConfig extends AbstractConfig {
           9,
           ConfigDef.Width.LONG,
           KDB_TABLE_NAME_DISPLAY
+      ).define(
+          KDB_PARSER_CLASS_CONFIG,
+          ConfigDef.Type.STRING,
+          ConfigDef.NO_DEFAULT_VALUE,
+          ConfigDef.Importance.HIGH,
+          KDB_PARSER_CLASS_DOC,
+          WRITES_GROUP,
+          10,
+          ConfigDef.Width.LONG,
+          KDB_PARSER_CLASS_DISPLAY
       )
       // read (get offset)
       .define(
@@ -278,7 +308,7 @@ public class KdbSinkConfig extends AbstractConfig {
           ConfigDef.Importance.HIGH,
           KDB_OFFSET_FN_DOC,
           OFFSETS_GROUP,
-          10,
+          11,
           ConfigDef.Width.LONG,
           KDB_OFFSET_FN_DISPLAY
       ).define(
@@ -288,39 +318,64 @@ public class KdbSinkConfig extends AbstractConfig {
           ConfigDef.Importance.LOW,
           KDB_SKIP_OFFSET_DOC,
           OFFSETS_GROUP,
-          11,
+          12,
           ConfigDef.Width.SHORT,
           KDB_SKIP_OFFSET_DISPLAY
       );
 
-  /** connector's name */
+  /**
+   * connector's name
+   */
   public final String connectorName;
-  /** kdb host */
+  /**
+   * kdb host
+   */
   public final String kdbHost;
-  /** kdb auth */
+  /**
+   * kdb auth
+   */
   public final String kdbAuth;
-  /** ssl enabled flag */
+  /**
+   * ssl enabled flag
+   */
   public final Boolean sslEnabled;
-  /** kdb write port */
+  /**
+   * kdb write port
+   */
   public final Long kdbWritePort;
-  /** kdb read port */
+  /**
+   * kdb read port
+   */
   public final Long kdbReadPort;
-  /** kdb write mode */
+  /**
+   * kdb write mode
+   */
   public final WriteMode writeMode;
-  /** async write enabled */
+  /**
+   * async write enabled
+   */
   public final Boolean asyncWrite;
-  /** write function */
+  /**
+   * write function
+   */
   public final String writeFn;
-  /** kdb table name */
+  /**
+   * kdb table name
+   */
   public final String tableName;
-  /** get offset function */
+  /**
+   * get offset function
+   */
   public final String offsetFn;
-  /** skip kdb offset */
+  /**
+   * skip kdb offset
+   */
   public final Boolean skipOffset;
 
 
   /**
    * Custom KDB configuration class
+   *
    * @param props configs properties map
    */
   public KdbSinkConfig(Map<?, ?> props) {
