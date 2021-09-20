@@ -35,5 +35,5 @@ public interface Parser<O extends InternalModel> {
    * @param input Array[Byte] representing a single deserialized kafka record
    * @return a list of KDB records
    */
-  List<O> parse(Byte[] input);
+  List<O> parse(byte[] input);
 }

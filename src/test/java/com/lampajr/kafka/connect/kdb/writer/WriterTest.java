@@ -18,15 +18,10 @@ package com.lampajr.kafka.connect.kdb.writer;
 import com.lampajr.kafka.connect.kdb.model.InternalModel;
 import com.lampajr.kafka.connect.kdb.parser.Parser;
 import com.lampajr.kafka.connect.kdb.utils.TestUtils;
-import kx.C;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.ArgumentMatchers;
-import org.mockito.Mockito;
-import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
@@ -46,7 +41,7 @@ public class WriterTest {
   public static class CustomParser implements Parser<CustomModel> {
 
     @Override
-    public List<CustomModel> parse(Byte[] input) {
+    public List<CustomModel> parse(byte[] input) {
       return new ArrayList<>();
     }
   }
@@ -54,8 +49,7 @@ public class WriterTest {
   private Writer writer;
 
   @Before
-  public void setUp() throws ClassNotFoundException, InvocationTargetException, NoSuchMethodException,
-      InstantiationException, IllegalAccessException {
+  public void setUp() {
     writer = new KdbWriter(TestUtils.createConfigs());
   }
 
@@ -65,6 +59,6 @@ public class WriterTest {
     Parser<?> parser = writer.loadParser(className);
     Assert.assertTrue(parser instanceof CustomParser);
     CustomParser customParser = (CustomParser) parser;
-    Assert.assertTrue(customParser.parse(new Byte[] {}).isEmpty());
+    Assert.assertTrue(customParser.parse(new byte[] {}).isEmpty());
   }
 }

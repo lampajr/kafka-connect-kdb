@@ -16,6 +16,7 @@
 package com.lampajr.kafka.connect.kdb.writer;
 
 import com.google.common.base.Preconditions;
+import com.lampajr.kafka.connect.kdb.model.InternalModel;
 import com.lampajr.kafka.connect.kdb.parser.Parser;
 import com.lampajr.kafka.connect.kdb.sink.KdbSinkConfig;
 import com.lampajr.kafka.connect.kdb.storage.KdbStorage;
@@ -25,7 +26,9 @@ import org.apache.kafka.connect.errors.DataException;
 import org.apache.kafka.connect.sink.SinkRecord;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 /**
  * Kdb implementation of a generic writer.
@@ -39,7 +42,7 @@ import java.util.Collection;
  * * parse byte array (single records) into some intermediate representation
  * * transform an intermediate representation into an internal model
  * * flushes data to the kdb server using the kdb storage
- *
+ * <p>
  * TODO: create test IT/Unit
  */
 public class KdbWriter extends Writer {
@@ -114,7 +117,7 @@ public class KdbWriter extends Writer {
     // null means to used
     Integer partition = null;
     Long offset = null;
-    byte[] data = new byte[] {};
+    List<InternalModel> data = new ArrayList<>();
 
     if (usingPartition) {
       // TODO retrieve partition
@@ -122,6 +125,13 @@ public class KdbWriter extends Writer {
 
     if (usingOffset) {
       // TODO retrieve offset
+    }
+
+    for (SinkRecord record : records) {
+      // converts value to ByteArray
+      byte[] value = toBytes("value", record.value());
+      // parse data into internal models using the dynamic parser
+      data.addAll(parser.parse(value));
     }
 
     store(writeFn, offset, partition, data);
@@ -149,7 +159,7 @@ public class KdbWriter extends Writer {
    * @throws C.KException error occurred in q process
    * @throws IOException  error occurred in the communication
    */
-  private void store(String fn, Long offset, Integer partition, byte[] data) throws C.KException, IOException {
+  private void store(String fn, Long offset, Integer partition, List<InternalModel> data) throws C.KException, IOException {
     Object[] params = {};
 
     if (offset != null) {
