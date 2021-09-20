@@ -115,11 +115,11 @@ public class KdbWriter extends Writer {
     byte[] data = new byte[] {};
 
     if (usingPartition) {
-      // retrieve partition
+      // TODO retrieve partition
     }
 
     if (usingOffset) {
-      // retrieve offset
+      // TODO retrieve offset
     }
 
     store(writeFn, offset, partition, data);

@@ -70,6 +70,8 @@ public abstract class Writer extends BaseLogger {
 
   /**
    * Stops the writer releasing all the acquired resources.
+   *
+   * @throws IOException error occurred in the communication with remote server
    */
   public abstract void stop() throws IOException;
 
