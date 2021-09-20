@@ -55,6 +55,9 @@ public abstract class Writer extends BaseLogger {
 
   /**
    * Start the writer
+   *
+   * @throws C.KException error occurred in the remote q process
+   * @throws IOException  error occurred in the communication with remote server
    */
   public abstract void start() throws C.KException, IOException;
 

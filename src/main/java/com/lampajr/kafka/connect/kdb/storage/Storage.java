@@ -39,6 +39,9 @@ public abstract class Storage {
 
   /**
    * Function that opens all needed connections
+   *
+   * @throws C.KException error occurred in the remote q process
+   * @throws IOException  error occurred in the communication with remote server
    */
   public abstract void open() throws C.KException, IOException;
 
@@ -47,6 +50,9 @@ public abstract class Storage {
    *
    * @param fn     kdb+/q function
    * @param params fn params
+   * @return the sync object returned by the q function
+   * @throws C.KException error occurred in the remote q process
+   * @throws IOException  error occurred in the communication with remote server
    */
   protected Object invoke(String fn, Object... params) throws C.KException, IOException {
     Object[] paramArray = {fn.toCharArray(), params};
@@ -58,6 +64,7 @@ public abstract class Storage {
    *
    * @param fn     kdb+/q function
    * @param params fn params
+   * @throws IOException error occurred in the communication with remote server
    */
   protected void invokeAsync(String fn, Object... params) throws IOException {
     Object[] paramArray = {fn.toCharArray(), params};
@@ -70,6 +77,9 @@ public abstract class Storage {
    *
    * @param fn     kdb+/q function
    * @param params fn params
+   * @return the sync object returned by the q function
+   * @throws C.KException error occurred in the remote q process
+   * @throws IOException  error occurred in the communication with remote server
    */
   protected Object read(String fn, Object... params) throws C.KException, IOException {
     Object[] paramArray = {fn.toCharArray(), params};

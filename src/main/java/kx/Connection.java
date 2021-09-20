@@ -18,19 +18,28 @@ package kx;
 import java.io.Closeable;
 import java.io.IOException;
 
+/**
+ * Abstract interface that models a generic connection with a kdb+ remote server
+ */
 public interface Connection extends Closeable {
 
   /**
    * Asynchronous kdb+ function invocation
-   * @param fn function name that must be invoked
+   *
+   * @param fn     function name that must be invoked
    * @param params array of object params
+   * @throws IOException error occurred in the communication with remote server
    */
   void ks(String fn, Object params) throws IOException;
 
   /**
    * Synchronous kdb+ function invocation
-   * @param fn function name that must be invoked
+   *
+   * @param fn     function name that must be invoked
    * @param params array of object params
+   * @return function result
+   * @throws C.KException error occurred in the remote q process
+   * @throws IOException  error occurred in the communication with remote server
    */
   Object k(String fn, Object params) throws C.KException, IOException;
 }
