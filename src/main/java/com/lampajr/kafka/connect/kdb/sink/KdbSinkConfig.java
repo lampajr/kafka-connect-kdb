@@ -16,7 +16,7 @@
 package com.lampajr.kafka.connect.kdb.sink;
 
 import com.google.common.base.Strings;
-import com.lampajr.kafka.connect.kdb.util.ConnectorConfigUtils;
+import com.lampajr.kafka.connect.kdb.util.KafkaUtils;
 import org.apache.kafka.common.config.AbstractConfig;
 import org.apache.kafka.common.config.ConfigDef;
 import org.apache.kafka.common.config.ConfigException;
@@ -371,6 +371,10 @@ public class KdbSinkConfig extends AbstractConfig {
    * skip kdb offset
    */
   public final Boolean skipOffset;
+  /**
+   * Parser class qualified name
+   */
+  public final String parserClassName;
 
 
   /**
@@ -380,7 +384,7 @@ public class KdbSinkConfig extends AbstractConfig {
    */
   public KdbSinkConfig(Map<?, ?> props) {
     super(CONFIG_DEF, props);
-    this.connectorName = ConnectorConfigUtils.getConnectorName(props);
+    this.connectorName = KafkaUtils.getConnectorName(props);
     this.kdbHost = getString(KDB_HOST_CONFIG);
     this.kdbAuth = getString(KDB_AUTH_CONFIG);
     this.sslEnabled = getBoolean(KDB_SSL_ENABLED_CONFIG);
@@ -392,6 +396,7 @@ public class KdbSinkConfig extends AbstractConfig {
     this.tableName = getString(KDB_TABLE_NAME_CONFIG);
     this.offsetFn = getString(KDB_OFFSET_FN_CONFIG);
     this.skipOffset = getBoolean(KDB_SKIP_OFFSET_CONFIG);
+    this.parserClassName = getString(KDB_PARSER_CLASS_CONFIG);
 
     // TODO: implement cross-fields checks
     // offset function must be set if writeMode requires offset

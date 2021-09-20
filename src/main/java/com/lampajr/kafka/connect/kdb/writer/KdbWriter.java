@@ -21,10 +21,11 @@ import com.lampajr.kafka.connect.kdb.sink.KdbSinkConfig;
 import com.lampajr.kafka.connect.kdb.storage.KdbStorage;
 import com.lampajr.kafka.connect.kdb.storage.Storage;
 import kx.C;
+import org.apache.kafka.connect.errors.DataException;
 import org.apache.kafka.connect.sink.SinkRecord;
 
 import java.io.IOException;
-import java.util.List;
+import java.util.Collection;
 
 /**
  * Kdb implementation of a generic writer.
@@ -47,8 +48,16 @@ public class KdbWriter extends Writer {
 
   private Parser<?> parser;
 
+  private boolean isAsync;
+
+  private String writeFn;
+
+  private String offsetFn;
+
+  private KdbSinkConfig.WriteMode writeMode;
+
   /**
-   * Creates a KDB writer instance starting from KDB sink connector configuration
+   * Creates a KDB writer instance saving the provided configurations
    *
    * @param config connector configuration
    */
@@ -56,13 +65,15 @@ public class KdbWriter extends Writer {
     this.config = config;
   }
 
-  /**
-   * Initialize the kdb writer
-   *
-   * @throws C.KException error occurred in the remote q process
-   * @throws IOException  error occurred in the communication
-   */
-  public void init() throws C.KException, IOException {
+  @Override
+  public void init() {
+    logger.info("Initializing kdb writer..");
+
+    isAsync = this.config.asyncWrite;
+    writeFn = this.config.writeFn;
+    offsetFn = this.config.offsetFn;
+    writeMode = this.config.writeMode;
+
     // in according to the provided configuration, use the correct storage instance
     storage = new KdbStorage(
         config.kdbHost,
@@ -73,7 +84,7 @@ public class KdbWriter extends Writer {
     );
 
     // dynamically load a parser class in according to the provided configuration
-    parser = null;
+    parser = loadParser(this.config.parserClassName);
   }
 
   @Override
@@ -89,28 +100,97 @@ public class KdbWriter extends Writer {
   }
 
   @Override
-  public void stop() {
+  public void stop() throws IOException {
     logger.info("Stopping kdb writer..");
     // close storage connection
+    storage.close();
   }
 
   @Override
-  public void write(List<SinkRecord> records) throws IOException, C.KException {
+  public void write(Collection<SinkRecord> records, boolean usingPartition, boolean usingOffset)
+      throws IOException, C.KException {
+    // null means to used
+    Integer partition = null;
+    Long offset = null;
+    byte[] data = new byte[] {};
 
-  }
+    if (usingPartition) {
+      // retrieve partition
+    }
 
-  @Override
-  public void write(List<SinkRecord> records, int partition) throws IOException, C.KException {
+    if (usingOffset) {
+      // retrieve offset
+    }
 
+    store(writeFn, offset, partition, data);
   }
 
   @Override
   public Long getOffset(String topic) throws IOException, C.KException {
+    // TODO: implement
     return -1L;
   }
 
   @Override
   public Long getOffset(String topic, int partition) throws IOException, C.KException {
+    // TODO: implement
     return -1L;
+  }
+
+  /**
+   * Flushes data to kdb+
+   *
+   * @param fn        q function
+   * @param offset    kafka offset [nullable]
+   * @param partition topic partition [nullable]
+   * @param data      data that must be stored
+   * @throws C.KException error occurred in q process
+   * @throws IOException  error occurred in the communication
+   */
+  private void store(String fn, Long offset, Integer partition, byte[] data) throws C.KException, IOException {
+    Object[] params = {};
+
+    if (offset != null) {
+      params = new Object[] {params, offset};
+    }
+
+    if (partition != null) {
+      params = new Object[] {params, partition};
+    }
+
+    params = new Object[] {params, data};
+
+    if (isAsync) {
+      storage.invokeAsync(fn, params);
+    } else {
+      storage.invoke(fn, params);
+    }
+  }
+
+  /**
+   * Deserialize the object into a byte array
+   *
+   * @param source sink record params (e.g., value or key)
+   * @param input  the object to deserialize
+   * @return the byte array representation of the input
+   * @throws DataException if the input has an invalid format
+   */
+  private byte[] toBytes(String source, Object input) {
+    final byte[] result;
+
+    if (input instanceof byte[]) {
+      result = (byte[]) input;
+    } else if (null == input) {
+      result = null;
+    } else {
+      throw new DataException(
+          String.format(
+              "The %s for the record must be in Bytes format. Consider using the ByteArrayConverter.",
+              source
+          )
+      );
+    }
+
+    return result;
   }
 }

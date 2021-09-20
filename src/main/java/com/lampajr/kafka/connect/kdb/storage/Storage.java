@@ -17,6 +17,8 @@ package com.lampajr.kafka.connect.kdb.storage;
 
 import kx.C;
 import kx.Connection;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 
@@ -26,6 +28,11 @@ import java.io.IOException;
  * Its implementation is mainly based on the Kdb driver usage [@see kx.C]
  */
 public abstract class Storage {
+
+  /**
+   * logger
+   */
+  protected final Logger logger = LoggerFactory.getLogger(getClass());
 
   /**
    * Represents a kdb+ remote write connection
@@ -46,6 +53,13 @@ public abstract class Storage {
   public abstract void open() throws C.KException, IOException;
 
   /**
+   * Function that closes all opened connections
+   *
+   * @throws IOException error occurred in the communication with remote server
+   */
+  public abstract void close() throws IOException;
+
+  /**
    * Synchronously invokes a q function to the target kdb+ server using the connection object
    *
    * @param fn     kdb+/q function
@@ -54,7 +68,7 @@ public abstract class Storage {
    * @throws C.KException error occurred in the remote q process
    * @throws IOException  error occurred in the communication with remote server
    */
-  protected Object invoke(String fn, Object... params) throws C.KException, IOException {
+  public Object invoke(String fn, Object... params) throws C.KException, IOException {
     Object[] paramArray = {fn.toCharArray(), params};
     return writeConnection.k(fn, paramArray);
   }
@@ -66,7 +80,7 @@ public abstract class Storage {
    * @param params fn params
    * @throws IOException error occurred in the communication with remote server
    */
-  protected void invokeAsync(String fn, Object... params) throws IOException {
+  public void invokeAsync(String fn, Object... params) throws IOException {
     Object[] paramArray = {fn.toCharArray(), params};
     writeConnection.ks(fn, paramArray);
   }
@@ -81,7 +95,7 @@ public abstract class Storage {
    * @throws C.KException error occurred in the remote q process
    * @throws IOException  error occurred in the communication with remote server
    */
-  protected Object read(String fn, Object... params) throws C.KException, IOException {
+  public Object read(String fn, Object... params) throws C.KException, IOException {
     Object[] paramArray = {fn.toCharArray(), params};
     return readConnection.k(fn, paramArray);
   }

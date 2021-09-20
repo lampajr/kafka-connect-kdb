@@ -15,12 +15,14 @@
  */
 package com.lampajr.kafka.connect.kdb.util;
 
+import org.apache.kafka.connect.sink.SinkRecord;
+
 import java.util.Map;
 
 /**
- * Utilities for the common connector configuration properties
+ * Kafka utilities class
  */
-public class ConnectorConfigUtils extends BaseLogger {
+public class KafkaUtils extends BaseLogger {
   /**
    * Connector name config key
    */
@@ -35,5 +37,20 @@ public class ConnectorConfigUtils extends BaseLogger {
   public static String getConnectorName(Map<?, ?> props) {
     Object name = props.get(CONNECTOR_NAME_CONFIG);
     return name == null ? null : name.toString();
+  }
+
+  /**
+   * Compute the location of a single sink record
+   *
+   * @param record sink record to process
+   * @return the location in terms of topic, partition and offset
+   */
+  public static String formatLocation(SinkRecord record) {
+    return String.format(
+        "topic = %s partition = %s offset = %s",
+        record.topic(),
+        record.kafkaPartition(),
+        record.kafkaOffset()
+    );
   }
 }

@@ -22,7 +22,7 @@ import org.apache.kafka.connect.sink.SinkRecord;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-import java.util.List;
+import java.util.Collection;
 
 /**
  * Generic writer abstract class.
@@ -40,21 +40,28 @@ public abstract class Writer extends BaseLogger {
    *
    * @param className fullname of the parser class
    * @return a new instance of the loaded parser
-   * @throws ClassNotFoundException    dynamic parser class not found
-   * @throws NoSuchMethodException     dynamic parser class not found
-   * @throws InvocationTargetException dynamic parser class not found
-   * @throws InstantiationException    dynamic parser class not found
-   * @throws IllegalAccessException    dynamic parser class not found
    */
-  protected Parser<?> loadParser(String className) throws ClassNotFoundException, NoSuchMethodException,
-      InvocationTargetException, InstantiationException, IllegalAccessException {
+  protected Parser<?> loadParser(String className) {
     logger.info("Loading parser class: {}", className);
     ClassLoader loader = Writer.class.getClassLoader();
-    return (Parser<?>) loader.loadClass(className).getDeclaredConstructor().newInstance();
+
+    try {
+      return (Parser<?>) loader.loadClass(className).getDeclaredConstructor().newInstance();
+    } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException
+        | ClassNotFoundException e) {
+      // break connector initialization
+      throw new RuntimeException("Error loading parser class", e);
+    }
   }
 
   /**
-   * Start the writer
+   * Initialize the writer instance, loading all needed dependencies
+   */
+  public abstract void init();
+
+  /**
+   * Start the writer instance, acquiring all resources from its dependencies.
+   * It generally requires that init() has been already called.
    *
    * @throws C.KException error occurred in the remote q process
    * @throws IOException  error occurred in the communication with remote server
@@ -62,28 +69,22 @@ public abstract class Writer extends BaseLogger {
   public abstract void start() throws C.KException, IOException;
 
   /**
-   * Stops the writer
+   * Stops the writer releasing all the acquired resources.
    */
-  public abstract void stop();
+  public abstract void stop() throws IOException;
 
   /**
    * Flushes data to a target system
    *
-   * @param records list of records to store
+   * @param records        list of records to store
+   * @param usingPartition if the q process expects the topic partition
+   * @param usingOffset    if the q process expects the offset
    * @throws IOException  if something went wrong in the connection with the target system
    * @throws C.KException if the target kdb system throws some errors
    */
-  public abstract void write(List<SinkRecord> records) throws IOException, C.KException;
-
-  /**
-   * Flushes data coming from a specific partition to a target system
-   *
-   * @param records   list of records to store
-   * @param partition topic partition from which data has been retrieved
-   * @throws IOException  if something went wrong in the connection with the target system
-   * @throws C.KException if the target kdb system throws some errors
-   */
-  public abstract void write(List<SinkRecord> records, int partition) throws IOException, C.KException;
+  public abstract void write(Collection<SinkRecord> records,
+                             boolean usingPartition,
+                             boolean usingOffset) throws IOException, C.KException;
 
   /**
    * Retrieve the offset for a specific topic

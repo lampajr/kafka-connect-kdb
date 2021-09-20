@@ -48,6 +48,9 @@ public class KdbSinkTask extends SinkTask {
   // writer: flushes data to kdb
   private Writer writer;
 
+  private boolean usingOffset;
+  private boolean usingPartition;
+
   @Override
   public String version() {
     return VersionUtil.getVersion(getClass());
@@ -60,6 +63,9 @@ public class KdbSinkTask extends SinkTask {
     // init configurations
     config = new KdbSinkConfig(props);
 
+    usingOffset = isUsingOffset();
+    usingPartition = isUsingPartition();
+
     // init writer
     try {
       initWriter();
@@ -70,20 +76,37 @@ public class KdbSinkTask extends SinkTask {
     }
 
     // load offset only if enabled
-    if (isUsingOffset()) {
+    if (usingOffset) {
       loadOffsets(this.context.assignment());
     }
   }
 
   @Override
-  public void put(Collection<SinkRecord> collection) {
-    // TODO: implement
+  public void put(Collection<SinkRecord> records) {
+    logger.info("Processing {} record(s)", records.size());
+
+    if (records.isEmpty()) {
+      return;
+    }
+
+    try {
+      writer.write(records, usingPartition, usingOffset);
+    } catch (IOException e) {
+      throw new RetriableException("Error flushing data to kdb, retrying..", e);
+    } catch (C.KException e) {
+      throw new RuntimeException("KDB+ writes failed deu to kx error", e);
+    }
+
   }
 
   @Override
   public void stop() {
-    writer.stop();
     logger.info("Stopping KDB {} Sink task..", config.connectorName);
+    try {
+      writer.stop();
+    } catch (IOException e) {
+      throw new RuntimeException("Error stopping writer.", e);
+    }
   }
 
   /**
@@ -92,8 +115,10 @@ public class KdbSinkTask extends SinkTask {
    * main goal is to flush data to the kdb server
    */
   private void initWriter() throws C.KException, IOException {
+    // create instance
     writer = new KdbWriter(this.config);
-    writer.start();
+    writer.init(); // initialize the writer
+    writer.start(); // start the writer
   }
 
   /**
@@ -107,7 +132,7 @@ public class KdbSinkTask extends SinkTask {
 
     for (TopicPartition partition : partitions) {
       try {
-        Long offset = isUsingPartition()
+        Long offset = usingPartition
             ? writer.getOffset(partition.topic(), partition.partition())
             : writer.getOffset(partition.topic());
 
@@ -144,4 +169,5 @@ public class KdbSinkTask extends SinkTask {
     return this.config.writeMode == KdbSinkConfig.WriteMode.WITH_PARTITION
         || this.config.writeMode == KdbSinkConfig.WriteMode.FULL;
   }
+
 }

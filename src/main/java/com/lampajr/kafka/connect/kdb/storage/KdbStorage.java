@@ -49,7 +49,17 @@ public class KdbStorage extends Storage {
 
   @Override
   public void open() throws C.KException, IOException {
+    logger.info("Opening read connection.. [{}]", host + ":" + readPort);
     readConnection = new kx.C(host, readPort, auth, enableTls);
+    logger.info("Opening write connection.. [{}]", host + ":" + writePort);
     writeConnection = new kx.C(host, writePort, auth, enableTls);
+  }
+
+  @Override
+  public void close() throws IOException {
+    logger.info("Closing write connection..");
+    writeConnection.close();
+    logger.info("Closing read connection..");
+    readConnection.close();
   }
 }
