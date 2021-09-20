@@ -34,7 +34,8 @@ import java.util.Set;
 
 /**
  * Main KDB sink task
- * TODO: implement
+ *
+ * TODO: create test IT/Unit
  */
 public class KdbSinkTask extends SinkTask {
 

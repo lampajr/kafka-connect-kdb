@@ -21,14 +21,16 @@ import java.io.IOException;
 
 /**
  * KDB storage implementation that uses the kx.C class as kdb+ driver [@see kx.C].
+ *
+ * TODO: create test IT/Unit
  */
 public class KdbStorage extends Storage {
 
-  private String host;
-  private int readPort;
-  private int writePort;
-  private String auth;
-  private boolean enableTls;
+  private final String host;
+  private final int readPort;
+  private final int writePort;
+  private final String auth;
+  private final boolean enableTls;
 
   /**
    * Save connection configurations

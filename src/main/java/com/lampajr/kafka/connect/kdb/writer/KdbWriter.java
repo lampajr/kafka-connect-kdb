@@ -39,6 +39,8 @@ import java.util.Collection;
  * * parse byte array (single records) into some intermediate representation
  * * transform an intermediate representation into an internal model
  * * flushes data to the kdb server using the kdb storage
+ *
+ * TODO: create test IT/Unit
  */
 public class KdbWriter extends Writer {
 
