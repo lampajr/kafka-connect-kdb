@@ -112,22 +112,20 @@ public class KdbWriter extends Writer {
   }
 
   @Override
-  public void write(Collection<SinkRecord> records, boolean usingPartition, boolean usingOffset)
+  public void write(Collection<SinkRecord> records, Integer partition, Long offset)
       throws IOException, C.KException {
-    // null means to used
-    Integer partition = null;
-    Long offset = null;
+
+    Preconditions.checkArgument(!records.isEmpty(), "Cannot write empty list of records");
+
     List<InternalModel> data = new ArrayList<>();
 
-    if (usingPartition) {
-      // TODO retrieve partition
-    }
-
-    if (usingOffset) {
-      // TODO retrieve offset
-    }
-
     for (SinkRecord record : records) {
+
+      if (offset != null && record.kafkaOffset() > offset) {
+        // update the offset with the higher one, if any
+        offset = record.kafkaOffset();
+      }
+
       // converts value to ByteArray
       byte[] value = toBytes("value", record.value());
       // parse data into internal models using the dynamic parser
@@ -139,14 +137,12 @@ public class KdbWriter extends Writer {
 
   @Override
   public Long getOffset(String topic) throws IOException, C.KException {
-    // TODO: implement
-    return -1L;
+    return (Long) storage.read(offsetFn, topic);
   }
 
   @Override
   public Long getOffset(String topic, int partition) throws IOException, C.KException {
-    // TODO: implement
-    return -1L;
+    return (Long) storage.read(offsetFn, topic, partition);
   }
 
   /**

@@ -78,15 +78,15 @@ public abstract class Writer extends BaseLogger {
   /**
    * Flushes data to a target system
    *
-   * @param records        list of records to store
-   * @param usingPartition if the q process expects the topic partition
-   * @param usingOffset    if the q process expects the offset
+   * @param records   list of records to store
+   * @param partition not null if the q process expects the topic partition
+   * @param offset    not null if the q process expects the offset
    * @throws IOException  if something went wrong in the connection with the target system
    * @throws C.KException if the target kdb system throws some errors
    */
   public abstract void write(Collection<SinkRecord> records,
-                             boolean usingPartition,
-                             boolean usingOffset) throws IOException, C.KException;
+                             Integer partition,
+                             Long offset) throws IOException, C.KException;
 
   /**
    * Retrieve the offset for a specific topic

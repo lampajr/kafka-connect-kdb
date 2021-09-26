@@ -34,7 +34,7 @@ import java.util.Set;
 
 /**
  * Main KDB sink task
- *
+ * <p>
  * TODO: create test IT/Unit
  */
 public class KdbSinkTask extends SinkTask {
@@ -84,14 +84,37 @@ public class KdbSinkTask extends SinkTask {
 
   @Override
   public void put(Collection<SinkRecord> records) {
-    logger.info("Processing {} record(s)", records.size());
 
     if (records.isEmpty()) {
+      logger.debug("No records found");
       return;
     }
 
     try {
-      writer.write(records, usingPartition, usingOffset);
+      // compute partition/offset if needed
+      // null means not needed
+      Integer partition = null;
+      Long offset = null;
+
+      final SinkRecord first = records.iterator().next();
+      logger.debug(
+          "Processing {} records. First record kafka coordinates:({}-{}-{})",
+          records.size(), first.topic(), first.kafkaPartition(), first.kafkaOffset()
+      );
+
+      if (usingPartition) {
+        // assuming there is at least one sink for each partition
+        partition = first.kafkaPartition();
+      }
+
+      if (usingOffset) {
+        // provide the offset of the first record
+        offset = first.kafkaOffset();
+      }
+
+      // flush data to kdb
+      writer.write(records, partition, offset);
+
     } catch (IOException e) {
       throw new RetriableException("Error flushing data to kdb, retrying..", e);
     } catch (C.KException e) {
