@@ -425,25 +425,74 @@
             </plugin>
 
             <!-- Maven release plugin using git flow
-                 https://gist.github.com/lemiorhan/97b4f827c08aed58a9d8-->
+                 https://github.com/aleksandr-m/gitflow-maven-plugin -->
             <plugin>
-                <groupId>external.atlassian.jgitflow</groupId>
-                <artifactId>jgitflow-maven-plugin</artifactId>
-                <version>1.0-m5.1</version>
+                <groupId>com.amashchenko.maven.plugin</groupId>
+                <artifactId>gitflow-maven-plugin</artifactId>
+                <version>1.16.0</version>
                 <configuration>
-                    <flowInitContext>
-                        <masterBranchName>main</masterBranchName>
-                        <developBranchName>development</developBranchName>
-                        <featureBranchPrefix>feature-</featureBranchPrefix>
-                        <releaseBranchPrefix>release-</releaseBranchPrefix>
-                        <hotfixBranchPrefix>hotfix-</hotfixBranchPrefix>
-                        <versionTagPrefix>version-</versionTagPrefix>
-                    </flowInitContext>
-                    <!-- <username>USERNAME_FOR_A_GIT_USER</username>-->
-                    <!-- <password>PASSWORD_FOR_A_GIT_USER</password>-->
-                    <noDeploy>true</noDeploy>
-                    <squash>true</squash>
-                    <scmCommentPrefix>[RELEASE]</scmCommentPrefix>
+                    <mvnExecutable>path_to_maven_executable</mvnExecutable>
+                    <gitExecutable>path_to_git_executable</gitExecutable>
+
+                    <installProject>false</installProject>
+                    <verbose>false</verbose>
+
+                    <gitFlowConfig>
+                        <productionBranch>main</productionBranch>
+                        <developmentBranch>develop</developmentBranch>
+                        <featureBranchPrefix>feature/</featureBranchPrefix>
+                        <releaseBranchPrefix>release/</releaseBranchPrefix>
+                        <hotfixBranchPrefix>hotfix/</hotfixBranchPrefix>
+                        <supportBranchPrefix>support/</supportBranchPrefix>
+                        <versionTagPrefix>v</versionTagPrefix>
+                        <origin>origin</origin>
+                    </gitFlowConfig>
+
+                    <commitMessages>
+                        <featureStartMessage>Update versions for feature branch</featureStartMessage>
+                        <featureFinishMessage>Update versions for development branch</featureFinishMessage>
+
+                        <hotfixStartMessage>Update versions for hotfix</hotfixStartMessage>
+                        <hotfixFinishMessage>Update for next development version</hotfixFinishMessage>
+
+                        <hotfixVersionUpdateMessage>Update to hotfix version</hotfixVersionUpdateMessage>
+
+                        <releaseStartMessage>Update versions for release</releaseStartMessage>
+                        <releaseFinishMessage>Update for next development version</releaseFinishMessage>
+
+                        <releaseVersionUpdateMessage>Update for next development version</releaseVersionUpdateMessage>
+
+                        <!-- git merge messages -->
+                        <!-- Default git merge commit message will be used if left empty or undefined. -->
+
+                        <releaseFinishMergeMessage></releaseFinishMergeMessage>
+                        <releaseFinishDevMergeMessage></releaseFinishDevMergeMessage>
+
+                        <featureFinishDevMergeMessage></featureFinishDevMergeMessage>
+
+                        <hotfixFinishMergeMessage></hotfixFinishMergeMessage>
+                        <hotfixFinishDevMergeMessage></hotfixFinishDevMergeMessage>
+                        <hotfixFinishReleaseMergeMessage></hotfixFinishReleaseMergeMessage>
+                        <hotfixFinishSupportMergeMessage></hotfixFinishSupportMergeMessage>
+
+                        <!-- / git merge messages -->
+
+                        <tagHotfixMessage>Tag hotfix</tagHotfixMessage>
+                        <tagReleaseMessage>Tag release</tagReleaseMessage>
+
+                        <!-- Migration Note: This was called <updateDevToAvoidConflitsMessage> in version 1.11.0, but has been deprecated in favour of the correctly spelt one below. -->
+                        <updateDevToAvoidConflictsMessage>Update develop to production version to avoid merge
+                            conflicts
+                        </updateDevToAvoidConflictsMessage>
+                        <updateDevBackPreMergeStateMessage>Update develop version back to pre-merge state
+                        </updateDevBackPreMergeStateMessage>
+
+                        <updateReleaseToAvoidConflictsMessage>Update release to hotfix version to avoid merge
+                            conflicts
+                        </updateReleaseToAvoidConflictsMessage>
+                        <updateReleaseBackPreMergeStateMessage>Update release version back to pre-merge state
+                        </updateReleaseBackPreMergeStateMessage>
+                    </commitMessages>
                 </configuration>
             </plugin>
         </plugins>
