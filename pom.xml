@@ -431,8 +431,8 @@
                 <artifactId>gitflow-maven-plugin</artifactId>
                 <version>1.16.0</version>
                 <configuration>
-                    <mvnExecutable>path_to_maven_executable</mvnExecutable>
-                    <gitExecutable>path_to_git_executable</gitExecutable>
+<!--                    <mvnExecutable>path_to_maven_executable</mvnExecutable>-->
+<!--                    <gitExecutable>path_to_git_executable</gitExecutable>-->
 
                     <installProject>false</installProject>
                     <verbose>false</verbose>
