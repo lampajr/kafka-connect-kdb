@@ -423,6 +423,29 @@
                     </execution>
                 </executions>
             </plugin>
+
+            <!-- Maven release plugin using git flow
+                 https://gist.github.com/lemiorhan/97b4f827c08aed58a9d8-->
+            <plugin>
+                <groupId>external.atlassian.jgitflow</groupId>
+                <artifactId>jgitflow-maven-plugin</artifactId>
+                <version>1.0-m5.1</version>
+                <configuration>
+                    <flowInitContext>
+                        <masterBranchName>main</masterBranchName>
+                        <developBranchName>development</developBranchName>
+                        <featureBranchPrefix>feature-</featureBranchPrefix>
+                        <releaseBranchPrefix>release-</releaseBranchPrefix>
+                        <hotfixBranchPrefix>hotfix-</hotfixBranchPrefix>
+                        <versionTagPrefix>version-</versionTagPrefix>
+                    </flowInitContext>
+                    <!-- <username>USERNAME_FOR_A_GIT_USER</username>-->
+                    <!-- <password>PASSWORD_FOR_A_GIT_USER</password>-->
+                    <noDeploy>true</noDeploy>
+                    <squash>true</squash>
+                    <scmCommentPrefix>[RELEASE]</scmCommentPrefix>
+                </configuration>
+            </plugin>
         </plugins>
 
         <resources>
