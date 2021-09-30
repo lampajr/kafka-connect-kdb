@@ -1,4 +1,4 @@
-[[IN PROGRESS]]
+__[[ IN PROGRESS ]]__
 
 # Introduction
 
@@ -9,8 +9,6 @@ The KDB plugin is a collection of connectors that are used to interact with KDB 
 ## KDB Sink Connector
 
 The KDB Sink Connector is used to write data from Kafka to a KDB instance.
-
-TODO
 
 ### Configuration
 
