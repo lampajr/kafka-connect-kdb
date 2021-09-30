@@ -22,7 +22,7 @@
 
     <groupId>com.lampajr.kafka.connect</groupId>
     <artifactId>kafka-connect-kdb</artifactId>
-    <version>0.0.2-SNAPSHOT</version>
+    <version>0.0.2</version>
     <packaging>jar</packaging>
 
     <name>kafka-connect-kdb</name>
