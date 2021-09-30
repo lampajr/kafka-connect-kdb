@@ -218,7 +218,7 @@ public class KdbSinkConfig extends AbstractConfig {
           KDB_SSL_ENABLED_CONFIG,
           ConfigDef.Type.BOOLEAN,
           KDB_SSL_ENABLED_DEFAULT,
-          ConfigDef.Importance.HIGH,
+          ConfigDef.Importance.MEDIUM,
           KDB_SSL_ENABLED_DOC,
           CONNECTION_GROUP,
           3,
