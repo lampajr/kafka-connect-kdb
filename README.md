@@ -189,6 +189,6 @@ post the configuration to one the distributed connect worker(s).
 ### Versioning
 
 ```bash
-$> gitflow:release-start
-$> gitflow:release-finish
+$>mvn gitflow:release-start
+$>mvn gitflow:release-finish
 ```
